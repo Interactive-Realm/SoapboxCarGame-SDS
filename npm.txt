@@ -1,5 +1,0 @@
-npm install file-loader url-loader html-loader --save-dev //file loader, so audio can be loaded
-npm i path babel-preset-react // babel-react dependencies (deprecated)
-npm install --save-dev @babel/plugin-transform-private-property-in-object // Fix deprecation?? Ionno
-npm install @supabase/supabase-js
-npm install phaser3-rex-plugins

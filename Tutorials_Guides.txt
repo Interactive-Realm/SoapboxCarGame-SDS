@@ -1,1 +1,0 @@
-add React into Phaser base project: https://tnodes.medium.com/integrating-react-and-phaser-3-tutorial-eb96717d4a9d

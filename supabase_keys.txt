@@ -1,4 +1,0 @@
-Project URL: 
-https://dmigsdtcgybqkeizrwnc.supabase.co
-
-API key - anon, public: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtaWdzZHRjZ3licWtlaXpyd25jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDEyNTM2OTAsImV4cCI6MjAxNjgyOTY5MH0.Vo0gwyHKGlAmCeu7DAHue-KI2Rt1HgZ7dp85jhE3NPY
