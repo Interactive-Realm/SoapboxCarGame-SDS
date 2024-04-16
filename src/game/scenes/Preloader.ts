@@ -31,13 +31,6 @@ export class Preloader extends Scene
     {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
-
-        this.load.image('logo', 'logo.png');
-        this.load.image('star', 'star.png');
-        this.load.image('knife', 'ButterKnife_128x128.png');
-        this.load.image('fork', 'Fork_128x128.png');
-        this.load.image('bottle', 'BeerBottle_128x128.png');
-        this.load.image('bubble', 'Bubble1.png');
     }
 
     create ()
