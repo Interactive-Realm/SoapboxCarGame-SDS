@@ -17,6 +17,7 @@ export class Game extends Scene
     // Game Variables
     private score: number;
     private playerPositionY: number;
+    private playerSpeed: number;
 
     // Asset variables
     parallaxRoadReferenceSize: GameObjects.Image;
@@ -25,6 +26,7 @@ export class Game extends Scene
     paraHaybaleRight: GameObjects.TileSprite;
     paraHaybaleLeft: GameObjects.TileSprite;
     player: GameObjects.Image;
+    
 
 
     constructor ()
@@ -36,9 +38,14 @@ export class Game extends Scene
         // Center of screen
         this.screenCenterX = (this.sys.game.config.width as number) / 2;
         this.screenCenterY = (this.sys.game.config.height as number) / 2;
+        // Screen edges, right and bottom
         this.screenWidth = this.sys.game.config.width as number;
         this.screenHeight = this.sys.game.config.height as number;
+        // Player start position
         this.playerPositionY = this.screenHeight * 0.75;
+        
+        // Speed settings
+        this.playerSpeed = 200;
     }
     
     init(data: any) {
@@ -89,6 +96,25 @@ export class Game extends Scene
     }
 
     SetupPlayer() {
-        this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
+        this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
+        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+            if(pointer.isDown) {
+                // Calculate the distance between the player and the pointer
+                const distanceX = pointer.x - this.player.x;
+                const distanceY = pointer.y - this.player.y;
+
+                // Calculate the angle towards the pointer
+                const angle = Math.atan2(distanceY, distanceX);
+
+                // Calculate the velocity components
+                const velocityX = Math.cos(angle) * this.playerSpeed;
+                const velocityY = Math.sin(angle) * this.playerSpeed;
+
+                // Update the player's position based on velocity
+                this.player.x += velocityX * this.game.loop.delta / 1000; // Delta time for smooth movement
+                this.player.y += velocityY * this.game.loop.delta / 1000;
+            }
+            
+        }, this);
     }
 }
