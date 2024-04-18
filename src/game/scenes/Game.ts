@@ -26,6 +26,11 @@ export class Game extends Scene
     paraHaybaleRight: GameObjects.TileSprite;
     paraHaybaleLeft: GameObjects.TileSprite;
     player: GameObjects.Image;
+
+    updatePlayerPosition: Function;
+
+    cursorIsBeingHeld: boolean;
+    
     
 
 
@@ -60,9 +65,16 @@ export class Game extends Scene
         this.SetupRoad();
         this.SetupGameMargin();
         this.SetupPlayer();
+        this.MovePlayer();
     }
 
     update(delta: number): void {
+        this.ParallaxEffect(delta)
+        
+
+    }
+
+    ParallaxEffect(delta: number) {
         // Parallax Movement
         let parallaxMovement = 380 * (delta / 1000);
         this.paraRoad.tilePositionY = -parallaxMovement;
@@ -97,24 +109,54 @@ export class Game extends Scene
 
     SetupPlayer() {
         this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
-        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-            if(pointer.isDown) {
-                // Calculate the distance between the player and the pointer
-                const distanceX = pointer.x - this.player.x;
-                const distanceY = pointer.y - this.player.y;
-
-                // Calculate the angle towards the pointer
-                const angle = Math.atan2(distanceY, distanceX);
-
-                // Calculate the velocity components
-                const velocityX = Math.cos(angle) * this.playerSpeed;
-                const velocityY = Math.sin(angle) * this.playerSpeed;
-
-                // Update the player's position based on velocity
-                this.player.x += velocityX * this.game.loop.delta / 1000; // Delta time for smooth movement
-                this.player.y += velocityY * this.game.loop.delta / 1000;
-            }
-            
-        }, this);
+        
     }
+    
+    SetCursorHoldTrue = () => {
+        this.cursorIsBeingHeld = true;
+        console.log(this.cursorIsBeingHeld);
+    }
+    SetCursorHoldFalse = () =>{
+        this.cursorIsBeingHeld = false;
+        console.log(this.cursorIsBeingHeld);
+    }
+
+    MovePlayer() {
+
+        
+        this.input.on('pointerdown', this.SetCursorHoldTrue);
+        this.input.on('pointerup', this.SetCursorHoldFalse);
+
+        this.updatePlayerPosition = function(pointer: Phaser.Input.Pointer) {
+            // Calculate the angle towards the pointer
+            const distanceX = pointer.x - this.player.x;
+            const distanceY = pointer.y - this.player.y;
+            const angle = Math.atan2(distanceY, distanceX);
+        
+            // Calculate the velocity components
+            const velocityX = Math.cos(angle) * this.playerSpeed;
+            const velocityY = Math.sin(angle) * this.playerSpeed;
+        
+            // Update the player's position based on velocity
+            this.player.x += velocityX * this.game.loop.delta / 1000; // Delta time for smooth movement
+            this.player.y += velocityY * this.game.loop.delta / 1000;
+
+
+            //const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        
+            // Call this function recursively to keep updating player position until pointer is released
+            if (this.cursorIsBeingHeld) {
+                requestAnimationFrame(() => {
+                    this.updatePlayerPosition(pointer);
+                });
+            }
+        }
+        // Add pointer down event to keep moving the player towards the pointer even when the pointer is still
+        this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+            // Call the update function to start moving the player towards the pointer
+            this.updatePlayerPosition(pointer);
+        }, this);
+
+    }
+
 }
