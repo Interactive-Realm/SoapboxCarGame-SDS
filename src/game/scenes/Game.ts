@@ -66,6 +66,7 @@ export class Game extends Scene
         this.SetupGameMargin();
         this.SetupPlayer();
         this.MovePlayer();
+        console.log("Phaser version: " + Phaser.VERSION);
     }
 
     update(delta: number): void {

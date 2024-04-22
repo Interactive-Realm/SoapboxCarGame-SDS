@@ -19,8 +19,8 @@ const config: Phaser.Types.Core.GameConfig = {
         default: 'arcade',
     },
     scale: {
-        // mode: Phaser.Scale.FIT,
-        // autoCenter: Phaser.Scale.CENTER_BOTH,
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     }, 
     backgroundColor: 0x7699c6,
 };
