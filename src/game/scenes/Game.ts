@@ -18,6 +18,7 @@ export class Game extends Scene
     private score: number;
     private playerPositionY: number;
     private playerSpeed: number;
+    private gameSpeed: number;
 
     // Asset variables
     parallaxRoadReferenceSize: GameObjects.Image;
@@ -26,6 +27,7 @@ export class Game extends Scene
     paraHaybaleRight: GameObjects.TileSprite;
     paraHaybaleLeft: GameObjects.TileSprite;
     player: GameObjects.Image;
+    obstacles: GameObjects.Image[] = [];
 
     updatePlayerPosition: Function;
 
@@ -51,6 +53,7 @@ export class Game extends Scene
         
         // Speed settings
         this.playerSpeed = 200;
+        this.gameSpeed = 500;
     }
     
     init(data: any) {
@@ -67,18 +70,28 @@ export class Game extends Scene
         this.SetupPlayer();
         this.MovePlayer();
         this.SetupCollision();
+        this.StartObstacleSpawner();
+        // Create a timed recurring event
+        
         console.log("Phaser version: " + Phaser.VERSION);
+    }
+    StartObstacleSpawner() {
+        this.time.addEvent({
+            delay: 1000, // The delay in milliseconds before the event first triggers
+            callback: this.SpawnObstacles, // The function to call when the event triggers
+            callbackScope: this, // The scope in which the callback function will be called
+            loop: true // Set to true to make the event repeat infinitely
+        });
     }
 
     update(delta: number): void {
         this.ParallaxEffect(delta)
-        
-
     }
 
+    
     ParallaxEffect(delta: number) {
         // Parallax Movement
-        let parallaxMovement = 380 * (delta / 1000);
+        let parallaxMovement = this.gameSpeed * (delta / 1000);
         this.paraRoad.tilePositionY = -parallaxMovement;
         this.paraHaybaleRight.tilePositionY = -parallaxMovement;
         this.paraHaybaleLeft.tilePositionY = -parallaxMovement;
@@ -89,8 +102,9 @@ export class Game extends Scene
         this.parallaxRoadReferenceSize = this.add.image(-400,-400, 'road');
 
         // Floor tilesprite
-        this.paraRoad = this.add.tileSprite(0,0,this.parallaxRoadReferenceSize.width, this.screenHeight, 'road');
+        this.paraRoad = this.add.tileSprite(0,0,this.parallaxRoadReferenceSize.width, this.screenHeight * 2, 'road');
         this.paraRoad.setOrigin(0.5, 0.5).setPosition(this.screenCenterX, this.screenCenterY).setDepth(1);
+        this.paraRoad.setScale(0.5);
         this.physics.add.existing(this.paraRoad);
     }
 
@@ -99,18 +113,21 @@ export class Game extends Scene
         this.parallaxHaybaleReferenceSize = this.add.image(-400,-400, 'haybale');
 
         // Right margin tilesprites
-        this.paraHaybaleRight = this.add.tileSprite(0,0,this.parallaxHaybaleReferenceSize.width, this.screenHeight, 'haybale');
-        this.paraHaybaleRight.setOrigin(0.5, 0.5).setPosition(this.screenWidth-64, this.screenCenterY).setDepth(2);
+        this.paraHaybaleRight = this.add.tileSprite(0,0,this.parallaxHaybaleReferenceSize.width, this.screenHeight * 2, 'haybale');
+        this.paraHaybaleRight.setOrigin(0.5, 0.5).setPosition(this.screenWidth-32, this.screenCenterY).setDepth(2);
+        this.paraHaybaleRight.setScale(0.5);
         this.physics.add.existing(this.paraHaybaleRight);
 
         // Left margin tilesprites
-        this.paraHaybaleLeft = this.add.tileSprite(0,0,this.parallaxHaybaleReferenceSize.width, this.screenHeight, 'haybale');
-        this.paraHaybaleLeft.setOrigin(0.5, 0.5).setPosition(64, this.screenCenterY).setDepth(2);
+        this.paraHaybaleLeft = this.add.tileSprite(0,0,this.parallaxHaybaleReferenceSize.width, this.screenHeight * 2, 'haybale');
+        this.paraHaybaleLeft.setOrigin(0.5, 0.5).setPosition(32, this.screenCenterY).setDepth(2);
+        this.paraHaybaleLeft.setScale(0.5);
         this.physics.add.existing(this.paraHaybaleLeft);
     }
 
     SetupPlayer() {
         this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
+        this.player.setScale(0.5);
         this.physics.add.existing(this.player);
         
     }
@@ -118,6 +135,7 @@ export class Game extends Scene
     SetupCollision() {
         this.physics.add.overlap(this.player, this.paraHaybaleLeft, this.endGame);
         this.physics.add.overlap(this.player, this.paraHaybaleRight, this.endGame);
+        this.physics.add.overlap(this.player, this.obstacles, this.endGame);
     }
     
     SetCursorHoldTrue = () => {
@@ -128,6 +146,33 @@ export class Game extends Scene
         this.cursorIsBeingHeld = false;
         console.log(this.cursorIsBeingHeld);
     }
+
+    SpawnObstacles() {
+         // Array containing filenames of the images
+         const obstacleImages = ['obstacle'];
+
+
+         // Randomly select an image filename from the array
+         const randomImage = Phaser.Math.RND.pick(obstacleImages);
+ 
+         // Create and position the trash item
+         const obstacleObject = this.add.image(
+             Phaser.Math.Between(64+32, (this.screenWidth-64-32)),
+             0 - 64, // spawner lige over browser vinduet
+             randomImage
+         ).setDepth(4).setScale(0.5);
+
+ 
+         this.physics.add.existing(obstacleObject);
+
+         const obstacleBody = obstacleObject.body as Phaser.Physics.Arcade.Body;
+
+         // Move the trash down
+         obstacleBody.setVelocity(0, (this.gameSpeed / 2));
+
+         this.obstacles.push(obstacleObject);
+    }
+
     endGame() {
         EventBus.emit('gameHasEnded', true);   
         console.log("game ended!");

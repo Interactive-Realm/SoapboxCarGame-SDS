@@ -20,7 +20,7 @@ function App()
         };
 
         // Listen for the event emitted from Phaser
-        EventBus.on('booleanValue', handlePhaserEvent);
+        EventBus.on('gameHasEnded', handlePhaserEvent);
 
         // Clean up the event listener when component unmounts
         return () => {
