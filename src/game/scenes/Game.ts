@@ -66,6 +66,7 @@ export class Game extends Scene
         this.SetupGameMargin();
         this.SetupPlayer();
         this.MovePlayer();
+        this.SetupCollision();
         console.log("Phaser version: " + Phaser.VERSION);
     }
 
@@ -110,7 +111,13 @@ export class Game extends Scene
 
     SetupPlayer() {
         this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
+        this.physics.add.existing(this.player);
         
+    }
+
+    SetupCollision() {
+        this.physics.add.overlap(this.player, this.paraHaybaleLeft, this.endGame);
+        this.physics.add.overlap(this.player, this.paraHaybaleRight, this.endGame);
     }
     
     SetCursorHoldTrue = () => {
@@ -121,6 +128,11 @@ export class Game extends Scene
         this.cursorIsBeingHeld = false;
         console.log(this.cursorIsBeingHeld);
     }
+    endGame() {
+        EventBus.emit('gameHasEnded', true);   
+        console.log("game ended!");
+    }
+
 
     MovePlayer() {
 
