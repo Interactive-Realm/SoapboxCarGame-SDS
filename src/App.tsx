@@ -7,7 +7,7 @@ import PostGame from './PostGame/PostGame';
 function App()
 {
 
-            // State to track whether the registration scene button is clicked
+    // State to track whether the registration scene button is clicked
     const [gameEnd, setGameEnd] = useState(false);
 
     // State to track whether the game button is clicked
