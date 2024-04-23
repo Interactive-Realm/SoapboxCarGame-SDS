@@ -19,6 +19,8 @@ export class Game extends Scene
     private playerPositionY: number;
     private playerSpeed: number;
     private gameSpeed: number;
+    private points: GameObjects.Text;
+    private elapsedTime: number;
 
     // Asset variables
     parallaxRoadReferenceSize: GameObjects.Image;
@@ -54,6 +56,10 @@ export class Game extends Scene
         // Speed settings
         this.playerSpeed = 200;
         this.gameSpeed = 500;
+
+        // Score varibles
+        this.elapsedTime = 0;
+
     }
     
     init(data: any) {
@@ -71,6 +77,7 @@ export class Game extends Scene
         this.MovePlayer();
         this.SetupCollision();
         this.StartObstacleSpawner();
+        this.SetupPoints();
         // Create a timed recurring event
         
         console.log("Phaser version: " + Phaser.VERSION);
@@ -84,14 +91,37 @@ export class Game extends Scene
         });
     }
 
-    update(delta: number): void {
-        this.ParallaxEffect(delta)
+    update(time: number): void {
+        this.ParallaxEffect(time);
+        this.UpdateScore(time);
+        // this.MoveObstacles();
     }
 
+    SetupPoints() {
+        this.points = this.add.text(this.screenWidth/1.2, this.screenHeight/30, "").setDepth(2).setFontSize(48).setOrigin(0.5,0);
+
+    }
+
+    UpdateScore(time: number) {
+        // Update elapsed time
+        this.elapsedTime += time;
     
-    ParallaxEffect(delta: number) {
+        // Increase score linearly every second
+        if (this.elapsedTime >= 1000) { // Increase score every 1000 milliseconds (1 second)
+            this.score += 1; // Increase score by 1
+            this.elapsedTime -= 1000; // Subtract 1000 milliseconds to keep track of the remaining time
+            this.updateScoreText(); // Update the score text
+            this.gameSpeed += this.score * 0.0001;
+            //console.log(this.gameSpeed);
+        }  
+    }
+    updateScoreText() {
+        this.points.setText("Score: " + this.score);
+    }
+
+    ParallaxEffect(time: number) {
         // Parallax Movement
-        let parallaxMovement = this.gameSpeed * (delta / 1000);
+        let parallaxMovement = this.gameSpeed * (time / 1000);
         this.paraRoad.tilePositionY = -parallaxMovement;
         this.paraHaybaleRight.tilePositionY = -parallaxMovement;
         this.paraHaybaleLeft.tilePositionY = -parallaxMovement;
@@ -151,7 +181,6 @@ export class Game extends Scene
          // Array containing filenames of the images
          const obstacleImages = ['obstacle'];
 
-
          // Randomly select an image filename from the array
          const randomImage = Phaser.Math.RND.pick(obstacleImages);
  
@@ -168,9 +197,11 @@ export class Game extends Scene
          const obstacleBody = obstacleObject.body as Phaser.Physics.Arcade.Body;
 
          // Move the trash down
-         obstacleBody.setVelocity(0, (this.gameSpeed / 2));
+         obstacleBody.setVelocity(0, (this.gameSpeed/2));
 
+         console.log(this.gameSpeed);
          this.obstacles.push(obstacleObject);
+
     }
 
     endGame() {
