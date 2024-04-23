@@ -14,7 +14,7 @@ class DBUtility {
   async insertUserData(name: string, email: string, score: number): Promise<void> {
     try {
       const { data, error } = await this.supabase
-        .from('users') // Replace 'users' with your table name
+        .from('sdsusers') // Replace 'users' with your table name
         .insert([{ name, email, score }]); // Has to match the database column names
       
       if (error) {
@@ -44,7 +44,7 @@ class DBUtility {
 
   async GetHighscore(): Promise<UserHighscore[]> {
     const { data, error } = await this.supabase
-        .from("flappyusers")
+        .from("sdsusers")
         .select("name, email, score")
         .order("score", { ascending: false });
 

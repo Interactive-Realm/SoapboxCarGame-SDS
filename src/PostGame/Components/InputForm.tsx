@@ -16,7 +16,7 @@ const Input = ({ onSignUp, score }: Props) => {
         try {
             const { data, error } = await dbUtility.CheckUserData(
                 email,
-                "flappyusers"
+                "sdsusers"
             );
 
             if (error) return;
