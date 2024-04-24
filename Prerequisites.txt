@@ -2,9 +2,6 @@ Mujaffa/McDonalds type game
 
 Game mechanics:
 hold finger to move the car on the x axis
-Obstacles moving down across the screen
-Parallax road
-Obstacles kill the player (1 life)
 Points = distance
 
 Assets:
@@ -16,4 +13,9 @@ Pallets or boxes
 Chemistry set
 Sitting Man Statue
 
-- 
+
+Crash effect
+mock-up lach
+Tor Døre: React. Gemme bruger info.
+
+1. Points
