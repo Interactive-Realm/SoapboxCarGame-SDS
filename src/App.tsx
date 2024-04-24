@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { IRefPhaserGame, PhaserGame } from "./game/PhaserGame";
 import { EventBus } from "./EventBus";
 import IntroPage from "./IntroPage";
@@ -7,12 +7,12 @@ import { UserContext } from "./UserContext";
 
 function App() {
     // State to track whether the registration scene button is clicked
-    const [gameEnd, setGameEnd] = useState(false);
+    const [gameEnd, setGameEnd] = useState(true);
 
     // State to track whether the game button is clicked
     const [gameStarted, setGameStarted] = useState(false);
 
-    const [userEmail, setUserEmail] = useState('');
+    const userInfo = useContext(UserContext);
 
     useEffect(() => {
         // Function to handle event emitted from Phaser
@@ -47,8 +47,7 @@ function App() {
 
     // ----- The following is the components being rendered ----- //
     return (
-        <UserContext.Provider value={{ userInfo, setUserEmail
-        }}>
+        <UserContext.Provider value={userInfo}>
             <div id="app">
                 {gameEnd ? (
                     <PostGame playAgain={handlePlayAgain} />

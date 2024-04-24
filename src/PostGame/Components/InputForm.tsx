@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import dbUtility from "../Database/dbUtility";
 import { UserContext } from "../../UserContext";
 
@@ -9,11 +9,14 @@ type Props = {
 
 const Input = ({ onSignUp, score }: Props) => {
     const [fullname, setFullname] = useState("");
-    const [email, setEmail] = useContext(UserContext);
+    const [email, setEmail] = useState("");
+    const userInfo = useContext(UserContext)
+
     //var [score, setScore] = useState<number>();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        userInfo.userInfo = email
+        console.log(userInfo)
         try {
             const { data, error } = await dbUtility.CheckUserData(
                 email,
@@ -41,7 +44,7 @@ const Input = ({ onSignUp, score }: Props) => {
     };
 
     return (
-                <form onSubmit={ () => {handleSubmit}}>
+                <form onSubmit={handleSubmit}>
                 <label htmlFor="name" className="text">
                     Fulde navn
                 </label>

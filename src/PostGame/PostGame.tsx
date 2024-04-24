@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { EventBus } from "../EventBus";
 import dbUtility from "./Database/dbUtility";
 import InputForm from "./Components/InputForm";
 import HighscoreList from "./Components/HighscoreList";
+import { UserContext } from "./../UserContext";
 
 var score = 0;
 // Subscribe to score updates
@@ -20,6 +21,17 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [weeklyHighscores, setWeeklyHighscores] = useState<
         { name: string; email: string; score: string }[]
     >([]);
+    const userInfo = useContext(UserContext)
+
+    useEffect(() => {
+        if(userInfo.userInfo != ""){
+            setIsSignedIn(true)
+            dbUtility.GetHighscore().then((highscores) => {
+                setWeeklyHighscores(highscores);
+            });
+
+        }
+    }, [])
 
     const handleSignUp = () => {
         setIsSignedIn(true);
