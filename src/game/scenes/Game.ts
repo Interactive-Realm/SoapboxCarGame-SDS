@@ -20,11 +20,13 @@ export class Game extends Scene
     private playerSpeed: number;
     private gameSpeed: number;
     private points: GameObjects.Text;
+    private updateGamespeed: boolean;
     private elapsedTime: number;
 
     // Asset variables
     player: GameObjects.Image;
-    obstacles: GameObjects.Image[] = [];
+    obstacles: Phaser.Physics.Arcade.Sprite[] = [];
+    stripes: Phaser.Physics.Arcade.Sprite[] = [];
 
     updatePlayerPosition: Function;
 
@@ -50,11 +52,10 @@ export class Game extends Scene
         
         // Speed settings
         this.playerSpeed = 200;
-        this.gameSpeed = 500;
+        this.gameSpeed = 300;
 
-        // Score varibles
+        this.updateGamespeed = false;
         this.elapsedTime = 0;
-
     }
     
     init(data: any) {
@@ -106,27 +107,51 @@ export class Game extends Scene
 
     update(delta: number): void {
         this.UpdateScore(delta);
-        this.gameSpeed += 0.00001 * delta;
-        // console.log("gamespeed: " + this.gameSpeed)
+        this.UpdateGameSpeed(delta);
     }
 
     SetupPoints() {
-        this.points = this.add.text(this.screenWidth/1.2, this.screenHeight/30, "").setDepth(2).setFontSize(48).setOrigin(0.5,0);
-
+        this.points = this.add.text(this.screenCenterX, this.screenHeight/30, "").setDepth(2).setFontSize(48).setOrigin(0.5,0);
     }
 
     UpdateScore(delta: number) {
+        
+        var elapsedTime: number = 0;
+        // Update elapsed time
+        elapsedTime += delta;
+    
+        // Increase score linearly every second
+        if (elapsedTime >= 1000) { 
+            this.score += 1; // Increase score by 1
+            elapsedTime -= 1000; 
+            this.updateScoreText(); // Update the score text
+        }          
+    }
+    UpdateGameSpeed(delta:number) {
+        var elapsedTime: number = 0;
         // Update elapsed time
         this.elapsedTime += delta;
     
         // Increase score linearly every second
-        if (this.elapsedTime >= 1000) { // Increase score every 1000 milliseconds (1 second)
-            this.score += 1; // Increase score by 1
-            this.elapsedTime -= 1000; // Subtract 1000 milliseconds to keep track of the remaining time
-            this.updateScoreText(); // Update the score text
+        if (this.elapsedTime >= 1000000) { 
+            this.gameSpeed += 20;
+            var gameSpeed: number = 0;
+            gameSpeed = this.gameSpeed;
+            this.elapsedTime -= 1000000; 
+            this.obstacles.forEach(function(obstacle) {
+                // Get the physics body of the obstacle sprite
+                const obstacleBody = obstacle.body as Phaser.Physics.Arcade.Body;
+
+                // Set velocity for the obstacle sprite's body
+                obstacleBody.setVelocityY(gameSpeed);
+            });
+            this.stripes.forEach(function(stripe) {
+                const stripeBody = stripe.body as Phaser.Physics.Arcade.Body;
+
+                stripeBody.setVelocityY(gameSpeed);
+            })
+            console.log("updated gamespeed to: " + this.gameSpeed);
         }          
-
-
     }
     updateScoreText() {
         this.points.setText("Score: " + this.score);
@@ -135,46 +160,34 @@ export class Game extends Scene
     SpawnRoad(){
 
         // Create and position the trash item
-        const roadLine = this.add.image(
+        const roadLine = this.physics.add.sprite(
             this.screenCenterX,
             - 96, // spawner lige over browser vinduet
             'roadline'
         ).setDepth(1);
 
 
-        this.physics.add.existing(roadLine);
-
-       const lineBody = roadLine.body as Phaser.Physics.Arcade.Body;
-
        //  // Move the trash down
-       lineBody.setVelocity(0, (this.gameSpeed));
+       roadLine.setVelocity(0, (this.gameSpeed));
+       this.stripes.push(roadLine);
     }
 
     SpawnMargin() {
         // Create and position the margin item
-        const haybaleLeft = this.add.image(
+        const haybaleLeft = this.physics.add.sprite(
             32,
             - 32, // spawner lige over browser vinduet
             'haybale'
         ).setDepth(1);
 
-        const haybaleRight = this.add.image(
+        const haybaleRight = this.physics.add.sprite(
             this.screenWidth-32,
             - 32, // spawner lige over browser vinduet
             'haybale'
         ).setDepth(1);
 
-
-        this.physics.add.existing(haybaleLeft);
-        this.physics.add.existing(haybaleRight);
-
-        // Give the image a body so Phaser can move it using velocity
-       const haybaleBodyLeft = haybaleLeft.body as Phaser.Physics.Arcade.Body;
-       const haybaleBodyRight = haybaleRight.body as Phaser.Physics.Arcade.Body;
-
-       //  // Move the margin item downwards
-       haybaleBodyLeft.setVelocity(0, (this.gameSpeed));
-       haybaleBodyRight.setVelocity(0, (this.gameSpeed));
+       haybaleLeft.setVelocity(0, (this.gameSpeed));
+       haybaleRight.setVelocity(0, (this.gameSpeed));
 
        this.obstacles.push(haybaleLeft);
        this.obstacles.push(haybaleRight);
@@ -188,26 +201,20 @@ export class Game extends Scene
         const randomImage = Phaser.Math.RND.pick(obstacleImages);
 
         // Create and position the trash item
-        const obstacleObject = this.add.image(
+        const obstacleObject = this.physics.add.sprite(
             Phaser.Math.Between(64+32, (this.screenWidth-32-64)),
             - 32, // spawner lige over browser vinduet
             randomImage
         ).setDepth(3).setScale(1);
 
-
-        this.physics.add.existing(obstacleObject);
-
-        const obstacleBody = obstacleObject.body as Phaser.Physics.Arcade.Body;
-
-        //  // Move the trash down
-        obstacleBody.setVelocity(0, (this.gameSpeed));
+        // Move the trash downwards
+        obstacleObject.setVelocity(0, (this.gameSpeed));
 
         this.obstacles.push(obstacleObject);
    }
 
     SetupPlayer() {
         this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
-        this.player.setScale(0.5);
         this.physics.add.existing(this.player);
         
     }
