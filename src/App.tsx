@@ -3,6 +3,7 @@ import { IRefPhaserGame, PhaserGame } from './game/PhaserGame';
 import { EventBus } from './EventBus';
 import IntroPage from './IntroPage';
 import PostGame from './PostGame/PostGame';
+import { UserContext } from './UserContext'
 
 function App()
 {
@@ -47,11 +48,22 @@ function App()
     }   
     
     // ----- The following is the components being rendered ----- //
-
+    return(
+        <UserContext.Provider value={{state: this.state}}>   
+        <div id="app">
+            {gameEnd ? 
+            <PostGame playAgain={handlePlayAgain}/> : 
+            <div>
+            {!gameStarted ? <IntroPage onButtonClick={handleGameButtonClick} /> : <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />}
+            </div> }
+            
+            </div>    
+        </UserContext.Provider>
+    )
     if(gameEnd) {
         return(<div id="app">
             <div>
-                <PostGame playAgain={handlePlayAgain}/>
+                
             </div>
         </div>)
     }

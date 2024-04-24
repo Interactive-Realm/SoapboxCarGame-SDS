@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import dbUtility from "../Database/dbUtility";
+import { UserContext } from "../../UserContext";
 
 type Props = {
     onSignUp: () => void;
@@ -40,6 +41,8 @@ const Input = ({ onSignUp, score }: Props) => {
     };
 
     return (
+        <UserContext.Consumer>
+            {({user, updateUser}) => (
         <form onSubmit={handleSubmit}>
             <label htmlFor="name" className="text">
                 Fulde navn
@@ -67,6 +70,8 @@ const Input = ({ onSignUp, score }: Props) => {
 
             <input type="submit" value="Tilmeld" />
         </form>
+        )}
+    </UserContext.Consumer>
     );
 };
 
