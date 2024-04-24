@@ -9,8 +9,7 @@ type Props = {
 
 const Input = ({ onSignUp, score }: Props) => {
     const [fullname, setFullname] = useState("");
-    const [email, setEmail] = useState("");
-    const {} = useContext(UserContext)
+    const [email, setEmail] = useContext(UserContext);
     //var [score, setScore] = useState<number>();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,9 +41,7 @@ const Input = ({ onSignUp, score }: Props) => {
     };
 
     return (
-        <UserContext.Consumer>
-            {({userEmail, setUserEmail}) => (
-                <form onSubmit={ () => {handleSubmit; setUserEmail}}>
+                <form onSubmit={ () => {handleSubmit}}>
                 <label htmlFor="name" className="text">
                     Fulde navn
                 </label>
@@ -70,12 +67,7 @@ const Input = ({ onSignUp, score }: Props) => {
                 />
     
                 <input type="submit" value="Tilmeld" />
-            </form>
-            )}      
-        
-
-        </UserContext.Consumer>
-        
+            </form>               
     );
 };
 
