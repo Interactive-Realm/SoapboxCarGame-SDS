@@ -70,7 +70,7 @@ const Input = ({ onSignUp, score }: Props) => {
 
             <input type="submit" value="Tilmeld" />
         </form>
-        )}
+        
     </UserContext.Consumer>
     );
 };
