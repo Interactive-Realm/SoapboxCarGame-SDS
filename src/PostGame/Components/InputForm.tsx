@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import dbUtility from "../Database/dbUtility";
 import { UserContext } from "../../UserContext";
 
@@ -10,6 +10,7 @@ type Props = {
 const Input = ({ onSignUp, score }: Props) => {
     const [fullname, setFullname] = useState("");
     const [email, setEmail] = useState("");
+    const {} = useContext(UserContext)
     //var [score, setScore] = useState<number>();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,36 +43,39 @@ const Input = ({ onSignUp, score }: Props) => {
 
     return (
         <UserContext.Consumer>
-            {({user, updateUser}) => (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="name" className="text">
-                Fulde navn
-            </label>
-            <input
-                type="text"
-                id="name"
-                name="full    name"
-                placeholder="Dit navn.."
-                value={fullname}
-                onChange={(e) => setFullname(e.target.value)}
-            />
-
-            <label htmlFor="e-mail" className="text">
-                E-mail
-            </label>
-            <input
-                type="text"
-                id="mail"
-                name="email"
-                placeholder="Din e-mail.."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <input type="submit" value="Tilmeld" />
-        </form>
+            {({userEmail, setUserEmail}) => (
+                <form onSubmit={ () => {handleSubmit; setUserEmail}}>
+                <label htmlFor="name" className="text">
+                    Fulde navn
+                </label>
+                <input
+                    type="text"
+                    id="name"
+                    name="full    name"
+                    placeholder="Dit navn.."
+                    value={fullname}
+                    onChange={(e) => setFullname(e.target.value)}
+                />
+    
+                <label htmlFor="e-mail" className="text">
+                    E-mail
+                </label>
+                <input
+                    type="text"
+                    id="mail"
+                    name="email"
+                    placeholder="Din e-mail.."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+    
+                <input type="submit" value="Tilmeld" />
+            </form>
+            )}      
         
-    </UserContext.Consumer>
+
+        </UserContext.Consumer>
+        
     );
 };
 

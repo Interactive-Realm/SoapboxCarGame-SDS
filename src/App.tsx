@@ -47,7 +47,8 @@ function App() {
 
     // ----- The following is the components being rendered ----- //
     return (
-        <UserContext.Provider value={ userEmail }>
+        <UserContext.Provider value={{ userInfo, setUserEmail
+        }}>
             <div id="app">
                 {gameEnd ? (
                     <PostGame playAgain={handlePlayAgain} />
