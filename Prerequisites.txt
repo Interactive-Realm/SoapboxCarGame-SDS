@@ -1,8 +1,4 @@
-Mujaffa/McDonalds type game
 
-Game mechanics:
-hold finger to move the car on the x axis
-Points = distance
 
 Assets:
 - Obstacles
@@ -14,8 +10,6 @@ Chemistry set
 Sitting Man Statue
 
 
-Crash effect
-mock-up lach
-Tor Døre: React. Gemme bruger info.
-
-1. Points
+1. Object movement (alá flappy tubes).
+2. Die sequense (fade to black).
+3. Different movement types

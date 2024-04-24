@@ -149,7 +149,7 @@ export class Game extends Scene
                 const stripeBody = stripe.body as Phaser.Physics.Arcade.Body;
 
                 stripeBody.setVelocityY(gameSpeed);
-            })
+            });
             console.log("updated gamespeed to: " + this.gameSpeed);
         }          
     }
