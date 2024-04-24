@@ -29,7 +29,9 @@ const Input = ({ onSignUp, score }: Props) => {
                 await dbUtility.insertUserData(fullname, email, score);
                 onSignUp();
                 console.log("Data submitted successfully!");
-            } else console.log("User Exist");
+            } else{
+                await dbUtility.UpdateScore(email, score)
+            }
 
             // Call insertUserData function from dbUtility to insert user data
 

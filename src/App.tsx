@@ -65,7 +65,7 @@ function App() {
                 )}
             </div>
         </UserContext.Provider>
-    );    
+    );
 }
 
 export default App;

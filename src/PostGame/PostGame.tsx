@@ -8,7 +8,6 @@ import { UserContext } from "./../UserContext";
 var score = 0;
 // Subscribe to score updates
 EventBus.on("score", (data: number) => {
-    console.log(data);
     score = data;
 });
 
@@ -25,10 +24,12 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
 
     useEffect(() => {
         if(userInfo.userInfo != ""){
-            setIsSignedIn(true)
-            dbUtility.GetHighscore().then((highscores) => {
-                setWeeklyHighscores(highscores);
-            });
+            console.log(isSignedIn)
+            dbUtility.UpdateScore(userInfo.userInfo, score);
+            handleSignUp();
+            
+            
+            
 
         }
     }, [])
@@ -37,7 +38,6 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
         setIsSignedIn(true);
         dbUtility.GetHighscore().then((highscores) => {
             setWeeklyHighscores(highscores);
-            console.log(highscores);
         });
     };
 
@@ -51,7 +51,6 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
             <div>
                 <h1>
                     DIN SCORE: {score}
-                    {isSignedIn}
                 </h1>
             </div>
 
