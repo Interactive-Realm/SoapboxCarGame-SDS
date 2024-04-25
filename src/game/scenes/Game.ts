@@ -159,11 +159,6 @@ export class Game extends Scene
             - 32, // spawner lige over browser vinduet
             'haybale'
         ).setDepth(1);
-
-        if(this.testBoolean === false) {
-            this.testMarginObject = haybaleRight;
-            this.testBoolean = true;
-        }
         
         haybaleLeft.setVelocity(0, (this.gameSpeed));
         haybaleRight.setVelocity(0, (this.gameSpeed));
