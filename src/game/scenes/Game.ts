@@ -23,6 +23,8 @@ export class Game extends Scene
     private updateGamespeed: boolean;
     private elapsedTime: number;
     private spawnedMarginObject: boolean;
+    private changedScore: boolean;
+    private distanceCounter: number;
 
     private testBoolean: boolean;
     private testMarginObject: GameObjects.Sprite;
@@ -34,6 +36,8 @@ export class Game extends Scene
     updatePlayerPosition: Function;
 
     cursorIsBeingHeld: boolean;
+
+
     
     
 
@@ -63,11 +67,13 @@ export class Game extends Scene
         this.spawnedMarginObject = false;
 
         this.testBoolean = false;
+        this.changedScore = false;
     }
     
     init(data: any) {
         // Score variable
         this.score = 0;
+        this.distanceCounter = 0;
     }
 
     create()
@@ -137,11 +143,16 @@ export class Game extends Scene
         var elapsedTime: number = 0;
         // Update elapsed time
         elapsedTime += delta;
-    
+
         // Increase score linearly every second
-        if (elapsedTime >= 100000) { 
-            this.elapsedTime -= 100000; 
-            this.SetGameSpeed();
+        if (elapsedTime >= 1000 ) {
+            this.distanceCounter += 1;
+            elapsedTime -= 1000; 
+            
+            if(this.distanceCounter >= 1000) {
+                this.SetGameSpeed();
+                this.distanceCounter-=1000;
+            }
         }          
     }
     updateScoreText() {
@@ -149,8 +160,9 @@ export class Game extends Scene
     }
 
     SetGameSpeed() {
-        this.gameSpeed += 20;
+        this.gameSpeed += 50;
         console.log("gamespeed = " + this.gameSpeed);
+        this.changedScore = false;
     }
 
     SpawnRoad(){
