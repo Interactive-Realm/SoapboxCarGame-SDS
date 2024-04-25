@@ -34,7 +34,8 @@ export class Preloader extends Scene
         this.load.image('road', 'placeholder_road.png');
         this.load.image('player', 'placeholder_player.png');
         this.load.image('haybale', 'placeholder_haybale.png');
-        this.load.image('obstacle', 'placeholder_obstacle.png')
+        this.load.image('obstacle', 'placeholder_obstacle.png');
+        this.load.image('roadline', 'roadline.png')
     }
 
     create ()

@@ -1,11 +1,4 @@
-Mujaffa/McDonalds type game
 
-Game mechanics:
-hold finger to move the car on the x axis
-Obstacles moving down across the screen
-Parallax road
-Obstacles kill the player (1 life)
-Points = distance
 
 Assets:
 - Obstacles
@@ -16,4 +9,7 @@ Pallets or boxes
 Chemistry set
 Sitting Man Statue
 
-- 
+
+1. Object movement (alá flappy tubes).
+2. Die sequense (fade to black).
+3. Different movement types

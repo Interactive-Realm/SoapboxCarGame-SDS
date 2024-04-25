@@ -19,15 +19,14 @@ export class Game extends Scene
     private playerPositionY: number;
     private playerSpeed: number;
     private gameSpeed: number;
+    private points: GameObjects.Text;
+    private updateGamespeed: boolean;
+    private elapsedTime: number;
 
     // Asset variables
-    parallaxRoadReferenceSize: GameObjects.Image;
-    paraRoad: GameObjects.TileSprite;
-    parallaxHaybaleReferenceSize: GameObjects.Image;
-    paraHaybaleRight: GameObjects.TileSprite;
-    paraHaybaleLeft: GameObjects.TileSprite;
     player: GameObjects.Image;
-    obstacles: GameObjects.Image[] = [];
+    obstacles: Phaser.Physics.Arcade.Sprite[] = [];
+    stripes: Phaser.Physics.Arcade.Sprite[] = [];
 
     updatePlayerPosition: Function;
 
@@ -53,7 +52,10 @@ export class Game extends Scene
         
         // Speed settings
         this.playerSpeed = 200;
-        this.gameSpeed = 500;
+        this.gameSpeed = 300;
+
+        this.updateGamespeed = false;
+        this.elapsedTime = 0;
     }
     
     init(data: any) {
@@ -65,16 +67,26 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x414046);
-        this.SetupRoad();
-        this.SetupGameMargin();
+        this.StartRoadSpawner();
+        this.StartMarginSpawner();
         this.SetupPlayer();
         this.MovePlayer();
         this.SetupCollision();
         this.StartObstacleSpawner();
+        this.SetupPoints();
         // Create a timed recurring event
         
         console.log("Phaser version: " + Phaser.VERSION);
     }
+    StartRoadSpawner() {
+        this.time.addEvent({
+            delay: 500, // The delay in milliseconds before the event first triggers
+            callback: this.SpawnRoad, // The function to call when the event triggers
+            callbackScope: this, // The scope in which the callback function will be called
+            loop: true // Set to true to make the event repeat infinitely
+        });
+    }
+
     StartObstacleSpawner() {
         this.time.addEvent({
             delay: 1000, // The delay in milliseconds before the event first triggers
@@ -84,57 +96,130 @@ export class Game extends Scene
         });
     }
 
+    StartMarginSpawner() {
+        this.time.addEvent({
+            delay: 130, // The delay in milliseconds before the event first triggers
+            callback: this.SpawnMargin, // The function to call when the event triggers
+            callbackScope: this, // The scope in which the callback function will be called
+            loop: true // Set to true to make the event repeat infinitely
+        });
+    }
+
     update(delta: number): void {
-        this.ParallaxEffect(delta)
+        this.UpdateScore(delta);
+        this.UpdateGameSpeed(delta);
     }
 
+    SetupPoints() {
+        this.points = this.add.text(this.screenCenterX, this.screenHeight/30, "").setDepth(2).setFontSize(48).setOrigin(0.5,0);
+    }
+
+    UpdateScore(delta: number) {
+        
+        var elapsedTime: number = 0;
+        // Update elapsed time
+        elapsedTime += delta;
     
-    ParallaxEffect(delta: number) {
-        // Parallax Movement
-        let parallaxMovement = this.gameSpeed * (delta / 1000);
-        this.paraRoad.tilePositionY = -parallaxMovement;
-        this.paraHaybaleRight.tilePositionY = -parallaxMovement;
-        this.paraHaybaleLeft.tilePositionY = -parallaxMovement;
+        // Increase score linearly every second
+        if (elapsedTime >= 1000) { 
+            this.score += 1; // Increase score by 1
+            elapsedTime -= 1000; 
+            this.updateScoreText(); // Update the score text
+        }          
+    }
+    UpdateGameSpeed(delta:number) {
+        var elapsedTime: number = 0;
+        // Update elapsed time
+        this.elapsedTime += delta;
+    
+        // Increase score linearly every second
+        if (this.elapsedTime >= 1000000) { 
+            this.gameSpeed += 20;
+            var gameSpeed: number = 0;
+            gameSpeed = this.gameSpeed;
+            this.elapsedTime -= 1000000; 
+            this.obstacles.forEach(function(obstacle) {
+                // Get the physics body of the obstacle sprite
+                const obstacleBody = obstacle.body as Phaser.Physics.Arcade.Body;
+
+                // Set velocity for the obstacle sprite's body
+                obstacleBody.setVelocityY(gameSpeed);
+            });
+            this.stripes.forEach(function(stripe) {
+                const stripeBody = stripe.body as Phaser.Physics.Arcade.Body;
+
+                stripeBody.setVelocityY(gameSpeed);
+            });
+            console.log("updated gamespeed to: " + this.gameSpeed);
+        }          
+    }
+    updateScoreText() {
+        this.points.setText("Score: " + this.score);
     }
 
-    SetupRoad(){
-        // Added this picture outside of screen view, to reference size of the parafloor tilesprite
-        this.parallaxRoadReferenceSize = this.add.image(-400,-400, 'road');
+    SpawnRoad(){
 
-        // Floor tilesprite
-        this.paraRoad = this.add.tileSprite(0,0,this.parallaxRoadReferenceSize.width, this.screenHeight * 2, 'road');
-        this.paraRoad.setOrigin(0.5, 0.5).setPosition(this.screenCenterX, this.screenCenterY).setDepth(1);
-        this.paraRoad.setScale(0.5);
-        this.physics.add.existing(this.paraRoad);
+        // Create and position the trash item
+        const roadLine = this.physics.add.sprite(
+            this.screenCenterX,
+            - 96, // spawner lige over browser vinduet
+            'roadline'
+        ).setDepth(1);
+
+
+       //  // Move the trash down
+       roadLine.setVelocity(0, (this.gameSpeed));
+       this.stripes.push(roadLine);
     }
 
-    SetupGameMargin() {
-        // Added this picture outside of screen view, to reference size of the parafloor tilesprite
-        this.parallaxHaybaleReferenceSize = this.add.image(-400,-400, 'haybale');
+    SpawnMargin() {
+        // Create and position the margin item
+        const haybaleLeft = this.physics.add.sprite(
+            32,
+            - 32, // spawner lige over browser vinduet
+            'haybale'
+        ).setDepth(1);
 
-        // Right margin tilesprites
-        this.paraHaybaleRight = this.add.tileSprite(0,0,this.parallaxHaybaleReferenceSize.width, this.screenHeight * 2, 'haybale');
-        this.paraHaybaleRight.setOrigin(0.5, 0.5).setPosition(this.screenWidth-32, this.screenCenterY).setDepth(2);
-        this.paraHaybaleRight.setScale(0.5);
-        this.physics.add.existing(this.paraHaybaleRight);
+        const haybaleRight = this.physics.add.sprite(
+            this.screenWidth-32,
+            - 32, // spawner lige over browser vinduet
+            'haybale'
+        ).setDepth(1);
 
-        // Left margin tilesprites
-        this.paraHaybaleLeft = this.add.tileSprite(0,0,this.parallaxHaybaleReferenceSize.width, this.screenHeight * 2, 'haybale');
-        this.paraHaybaleLeft.setOrigin(0.5, 0.5).setPosition(32, this.screenCenterY).setDepth(2);
-        this.paraHaybaleLeft.setScale(0.5);
-        this.physics.add.existing(this.paraHaybaleLeft);
+       haybaleLeft.setVelocity(0, (this.gameSpeed));
+       haybaleRight.setVelocity(0, (this.gameSpeed));
+
+       this.obstacles.push(haybaleLeft);
+       this.obstacles.push(haybaleRight);
     }
+    
+    SpawnObstacles() {
+        // Array containing filenames of the images
+        const obstacleImages = ['obstacle'];
+
+        // Randomly select an image filename from the array
+        const randomImage = Phaser.Math.RND.pick(obstacleImages);
+
+        // Create and position the trash item
+        const obstacleObject = this.physics.add.sprite(
+            Phaser.Math.Between(64+32, (this.screenWidth-32-64)),
+            - 32, // spawner lige over browser vinduet
+            randomImage
+        ).setDepth(3).setScale(1);
+
+        // Move the trash downwards
+        obstacleObject.setVelocity(0, (this.gameSpeed));
+
+        this.obstacles.push(obstacleObject);
+   }
 
     SetupPlayer() {
         this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
-        this.player.setScale(0.5);
         this.physics.add.existing(this.player);
         
     }
 
     SetupCollision() {
-        this.physics.add.overlap(this.player, this.paraHaybaleLeft, this.endGame);
-        this.physics.add.overlap(this.player, this.paraHaybaleRight, this.endGame);
         this.physics.add.overlap(this.player, this.obstacles, this.endGame);
     }
     
@@ -147,35 +232,10 @@ export class Game extends Scene
         console.log(this.cursorIsBeingHeld);
     }
 
-    SpawnObstacles() {
-         // Array containing filenames of the images
-         const obstacleImages = ['obstacle'];
-
-
-         // Randomly select an image filename from the array
-         const randomImage = Phaser.Math.RND.pick(obstacleImages);
- 
-         // Create and position the trash item
-         const obstacleObject = this.add.image(
-             Phaser.Math.Between(64+32, (this.screenWidth-64-32)),
-             0 - 64, // spawner lige over browser vinduet
-             randomImage
-         ).setDepth(4).setScale(0.5);
-
- 
-         this.physics.add.existing(obstacleObject);
-
-         const obstacleBody = obstacleObject.body as Phaser.Physics.Arcade.Body;
-
-         // Move the trash down
-         obstacleBody.setVelocity(0, (this.gameSpeed / 2));
-
-         this.obstacles.push(obstacleObject);
-    }
-
-    endGame() {
-        EventBus.emit('gameHasEnded', true);   
-        console.log("game ended!");
+    endGame = () => {
+        console.log("game ended! Your Score: " + this.score);
+        EventBus.emit('score', this.score);
+        EventBus.emit('gameHasEnded', true);           
     }
 
 
