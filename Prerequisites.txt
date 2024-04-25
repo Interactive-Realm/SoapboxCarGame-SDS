@@ -8,9 +8,6 @@ Chemistry set
 Sitting Man Statue
 
 
-1. Object movement (alá flappy tubes).
-2. Die sequense (fade to black).
-3. Different movement types
-4. FixedUpdate
-5. Apply gamespeed to existing objects upon speed change
+1. Die sequense (fade to black).
+2. Different movement types
 
