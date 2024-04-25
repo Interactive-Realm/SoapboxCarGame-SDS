@@ -109,7 +109,7 @@ export class Game extends Scene
     }
 
     updateScoreText() {
-        this.points.setText("Score: " + this.score);
+        this.points.setText("Distance: " + this.score + " m");
     }
 
     UpdateGameSpeed() {
