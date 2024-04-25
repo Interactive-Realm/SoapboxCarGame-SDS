@@ -250,22 +250,8 @@ export class Game extends Scene
         this.input.on('pointerup', this.SetCursorHoldFalse);
 
         this.updatePlayerPosition = function(pointer: Phaser.Input.Pointer) {
-            // Calculate the angle towards the pointer
-            const distanceX = pointer.x - this.player.x;
-            const distanceY = pointer.y - this.player.y;
-            const angle = Math.atan2(distanceY, distanceX);
-        
-            // Calculate the velocity components
-            const velocityX = Math.cos(angle) * this.playerSpeed;
-            const velocityY = Math.sin(angle) * this.playerSpeed;
-        
-            // Update the player's position based on velocity
-            this.player.x += velocityX * this.game.loop.delta / 1000; // Delta time for smooth movement
-            this.player.y += velocityY * this.game.loop.delta / 1000;
-
-
-            //const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-        
+            this.player.x = pointer.x;
+            this.player.y = pointer.y;
             // Call this function recursively to keep updating player position until pointer is released
             if (this.cursorIsBeingHeld) {
                 requestAnimationFrame(() => {
