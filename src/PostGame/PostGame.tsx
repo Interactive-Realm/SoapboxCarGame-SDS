@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { EventBus } from "../EventBus";
 import dbUtility from "./Database/dbUtility";
 import InputForm from "./Components/InputForm";
 import HighscoreList from "./Components/HighscoreList";
+import { UserContext } from "./../UserContext";
 
 var score = 0;
 // Subscribe to score updates
 EventBus.on("score", (data: number) => {
-    console.log(data);
     score = data;
 });
 
@@ -20,12 +20,24 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [weeklyHighscores, setWeeklyHighscores] = useState<
         { name: string; email: string; score: string }[]
     >([]);
+    const userInfo = useContext(UserContext)
+
+    useEffect(() => {
+        if(userInfo.userInfo != ""){
+            console.log(isSignedIn)
+            dbUtility.UpdateScore(userInfo.userInfo, score);
+            handleSignUp();
+            
+            
+            
+
+        }
+    }, [])
 
     const handleSignUp = () => {
         setIsSignedIn(true);
         dbUtility.GetHighscore().then((highscores) => {
             setWeeklyHighscores(highscores);
-            console.log(highscores);
         });
     };
 
@@ -39,7 +51,6 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
             <div>
                 <h1>
                     DIN SCORE: {score}
-                    {isSignedIn}
                 </h1>
             </div>
 

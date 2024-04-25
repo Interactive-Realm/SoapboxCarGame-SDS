@@ -235,9 +235,10 @@ export class Game extends Scene
         console.log(this.cursorIsBeingHeld);
     }
 
-    endGame() {
-        EventBus.emit('gameHasEnded', true);   
-        console.log("game ended!");
+    endGame = () => {
+        console.log("game ended! Your Score: " + this.score);
+        EventBus.emit('score', this.score);
+        EventBus.emit('gameHasEnded', true);           
     }
 
 
