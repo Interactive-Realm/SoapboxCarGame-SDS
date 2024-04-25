@@ -17,7 +17,7 @@ const config: Phaser.Types.Core.GameConfig = {
     ],
     physics: {
         default: 'arcade',
-        arcade: {debug: true}
+        // arcade: {debug: true}
     },
     scale: {
         mode: Phaser.Scale.FIT,
