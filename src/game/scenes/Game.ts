@@ -22,7 +22,10 @@ export class Game extends Scene
     private points: GameObjects.Text;
     private updateGamespeed: boolean;
     private elapsedTime: number;
+    private spawnedMarginObject: boolean;
 
+    private testBoolean: boolean;
+    private testMarginObject: GameObjects.Sprite;
     // Asset variables
     player: GameObjects.Image;
     obstacles: Phaser.Physics.Arcade.Sprite[] = [];
@@ -56,6 +59,10 @@ export class Game extends Scene
 
         this.updateGamespeed = false;
         this.elapsedTime = 0;
+
+        this.spawnedMarginObject = false;
+
+        this.testBoolean = false;
     }
     
     init(data: any) {
@@ -67,15 +74,11 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x414046);
-        this.StartRoadSpawner();
-        this.StartMarginSpawner();
         this.SetupPlayer();
         this.MovePlayer();
         this.SetupCollision();
-        this.StartObstacleSpawner();
         this.SetupPoints();
-        this.physics.add.sprite(this.screenCenterX, 64, 'spawnline').setOrigin(0.5, 0);
-        this.add.image(this.screenCenterX, 32, 'haybale').setOrigin(0.5, 0.5);
+        this.SpawnMargin();
         // Create a timed recurring event
         
         console.log("Phaser version: " + Phaser.VERSION);
@@ -133,31 +136,21 @@ export class Game extends Scene
     UpdateGameSpeed(delta:number) {
         var elapsedTime: number = 0;
         // Update elapsed time
-        this.elapsedTime += delta;
+        elapsedTime += delta;
     
         // Increase score linearly every second
-        if (this.elapsedTime >= 1000000) { 
-            this.gameSpeed += 20;
-            var gameSpeed: number = 0;
-            gameSpeed = this.gameSpeed;
-            this.elapsedTime -= 1000000; 
-            this.obstacles.forEach(function(obstacle) {
-                // Get the physics body of the obstacle sprite
-                const obstacleBody = obstacle.body as Phaser.Physics.Arcade.Body;
-
-                // Set velocity for the obstacle sprite's body
-                obstacleBody.setVelocityY(gameSpeed);
-            });
-            this.stripes.forEach(function(stripe) {
-                const stripeBody = stripe.body as Phaser.Physics.Arcade.Body;
-
-                stripeBody.setVelocityY(gameSpeed);
-            });
-            console.log("updated gamespeed to: " + this.gameSpeed);
+        if (elapsedTime >= 100000) { 
+            this.elapsedTime -= 100000; 
+            this.SetGameSpeed();
         }          
     }
     updateScoreText() {
         this.points.setText("Score: " + this.score);
+    }
+
+    SetGameSpeed() {
+        this.gameSpeed += 20;
+        console.log("gamespeed = " + this.gameSpeed);
     }
 
     SpawnRoad(){
@@ -176,6 +169,8 @@ export class Game extends Scene
     }
 
     SpawnMargin() {
+
+        this.spawnedMarginObject = false;
         // Create and position the margin item
         const haybaleLeft = this.physics.add.sprite(
             32,
@@ -187,13 +182,36 @@ export class Game extends Scene
             this.screenWidth-32,
             - 32, // spawner lige over browser vinduet
             'haybale'
-        ).setDepth(1);
+        ).setDepth(1).setBounce(0).setDrag(0).setAngularDrag(0);
 
-       haybaleLeft.setVelocity(0, (this.gameSpeed));
-       haybaleRight.setVelocity(0, (this.gameSpeed));
+        if(this.testBoolean === false) {
+            this.testMarginObject = haybaleRight;
+            this.testBoolean = true;
+        }
+        
+        haybaleLeft.setVelocity(0, (this.gameSpeed));
+        haybaleRight.setVelocity(0, (this.gameSpeed));
 
-       this.obstacles.push(haybaleLeft);
-       this.obstacles.push(haybaleRight);
+        const spawnline = this.physics.add.sprite(this.screenCenterX, 64, 'spawnline').setOrigin(0.5, 0).setBounce(0).setDrag(0).setAngularDrag(0);
+
+        this.obstacles.push(haybaleLeft);
+        this.obstacles.push(haybaleRight);
+        if(this.spawnedMarginObject === false) {
+            // Set collision between haybaleLeft and spawnline
+            this.physics.add.overlap(haybaleRight, spawnline, () => {
+            this.DestroySpawnlineAndRespawn(spawnline);
+        });
+        }
+        
+
+       
+    }
+
+    DestroySpawnlineAndRespawn(spawnline: Phaser.Physics.Arcade.Sprite) {
+        
+        spawnline.destroy(); // Destroy the spawnline sprite
+        this.spawnedMarginObject = true;
+        this.SpawnMargin();
     }
     
     SpawnObstacles() {
@@ -235,10 +253,9 @@ export class Game extends Scene
         console.log(this.cursorIsBeingHeld);
     }
 
-    endGame = () => {
-        console.log("game ended! Your Score: " + this.score);
-        EventBus.emit('score', this.score);
-        EventBus.emit('gameHasEnded', true);           
+    endGame() {
+        EventBus.emit('gameHasEnded', true);   
+        console.log("game ended!");
     }
 
 
