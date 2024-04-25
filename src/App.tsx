@@ -6,7 +6,6 @@ import PostGame from "./PostGame/PostGame";
 import { UserContext } from "./UserContext";
 
 function App() {
-    
     // State to track whether the registration scene button is clicked
     const [gameEnd, setGameEnd] = useState(false);
 
