@@ -20,9 +20,11 @@ export class Game extends Scene
     private playerSpeed: number;
     private gameSpeed: number;
     private points: GameObjects.Text;
-    private updateGamespeed: boolean;
-    private elapsedTime: number;
+    private scoreTimer: Phaser.Time.TimerEvent;
+    private updateGameSpeed: Phaser.Time.TimerEvent;
 
+    private testBoolean: boolean;
+    private testMarginObject: GameObjects.Sprite;
     // Asset variables
     player: GameObjects.Image;
     obstacles: Phaser.Physics.Arcade.Sprite[] = [];
@@ -31,6 +33,8 @@ export class Game extends Scene
     updatePlayerPosition: Function;
 
     cursorIsBeingHeld: boolean;
+
+
     
     
 
@@ -54,8 +58,8 @@ export class Game extends Scene
         this.playerSpeed = 200;
         this.gameSpeed = 300;
 
-        this.updateGamespeed = false;
-        this.elapsedTime = 0;
+        this.testBoolean = false;
+
     }
     
     init(data: any) {
@@ -67,115 +71,82 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x414046);
-        this.StartRoadSpawner();
-        this.StartMarginSpawner();
         this.SetupPlayer();
         this.MovePlayer();
         this.SetupCollision();
-        this.StartObstacleSpawner();
         this.SetupPoints();
-        this.physics.add.sprite(this.screenCenterX, 64, 'spawnline').setOrigin(0.5, 0);
-        this.add.image(this.screenCenterX, 32, 'haybale').setOrigin(0.5, 0.5);
+        this.SpawnMargin();
+        this.SpawnRoad();
+        this.SpawnObstacles();
+
+        this.scoreTimer = this.time.addEvent({
+            delay: 25, // Increment score every 1000 milliseconds (1 second)
+            callback: this.UpdateScore,
+            callbackScope: this,
+            loop: true
+        });
+
+        this.updateGameSpeed = this.time.addEvent({
+            delay: 5000, // Increment score every 1000 milliseconds (1 second)
+            callback: this.UpdateGameSpeed,
+            callbackScope: this,
+            loop: true
+        });
+
         // Create a timed recurring event
         
         console.log("Phaser version: " + Phaser.VERSION);
-    }
-
-    StartRoadSpawner() {
-        this.time.addEvent({
-            delay: 500, // The delay in milliseconds before the event first triggers
-            callback: this.SpawnRoad, // The function to call when the event triggers
-            callbackScope: this, // The scope in which the callback function will be called
-            loop: true // Set to true to make the event repeat infinitely
-        });
-    }
-
-    StartObstacleSpawner() {
-        this.time.addEvent({
-            delay: 1000, // The delay in milliseconds before the event first triggers
-            callback: this.SpawnObstacles, // The function to call when the event triggers
-            callbackScope: this, // The scope in which the callback function will be called
-            loop: true // Set to true to make the event repeat infinitely
-        });
-    }
-
-    StartMarginSpawner() {
-        this.time.addEvent({
-            delay: 130, // The delay in milliseconds before the event first triggers
-            callback: this.SpawnMargin, // The function to call when the event triggers
-            callbackScope: this, // The scope in which the callback function will be called
-            loop: true // Set to true to make the event repeat infinitely
-        });
-    }
-
-    update(delta: number): void {
-        this.UpdateScore(delta);
-        this.UpdateGameSpeed(delta);
     }
 
     SetupPoints() {
         this.points = this.add.text(this.screenCenterX, this.screenHeight/30, "").setDepth(2).setFontSize(48).setOrigin(0.5,0);
     }
 
-    UpdateScore(delta: number) {
+    UpdateScore() {
         
-        var elapsedTime: number = 0;
-        // Update elapsed time
-        elapsedTime += delta;
-    
-        // Increase score linearly every second
-        if (elapsedTime >= 1000) { 
-            this.score += 1; // Increase score by 1
-            elapsedTime -= 1000; 
-            this.updateScoreText(); // Update the score text
-        }          
+        this.score += 1;
+        this.updateScoreText();
     }
-    UpdateGameSpeed(delta:number) {
-        var elapsedTime: number = 0;
-        // Update elapsed time
-        this.elapsedTime += delta;
-    
-        // Increase score linearly every second
-        if (this.elapsedTime >= 1000000) { 
-            this.gameSpeed += 20;
-            var gameSpeed: number = 0;
-            gameSpeed = this.gameSpeed;
-            this.elapsedTime -= 1000000; 
-            this.obstacles.forEach(function(obstacle) {
-                // Get the physics body of the obstacle sprite
-                const obstacleBody = obstacle.body as Phaser.Physics.Arcade.Body;
 
-                // Set velocity for the obstacle sprite's body
-                obstacleBody.setVelocityY(gameSpeed);
-            });
-            this.stripes.forEach(function(stripe) {
-                const stripeBody = stripe.body as Phaser.Physics.Arcade.Body;
-
-                stripeBody.setVelocityY(gameSpeed);
-            });
-            console.log("updated gamespeed to: " + this.gameSpeed);
-        }          
-    }
     updateScoreText() {
         this.points.setText("Score: " + this.score);
     }
 
+    UpdateGameSpeed() {
+        this.gameSpeed += 40;
+        var velocity = this.gameSpeed;
+        this.obstacles.forEach(function (obstacle) {
+            obstacle.setVelocityY(velocity);
+        });
+        this.stripes.forEach(function(stripe) {
+            stripe.setVelocityY(velocity);
+        })
+        console.log("gamespeed = " + this.gameSpeed);
+    }
+
     SpawnRoad(){
 
-        // Create and position the trash item
-        const roadLine = this.physics.add.sprite(
-            this.screenCenterX,
-            - 96, // spawner lige over browser vinduet
-            'roadline'
-        ).setDepth(1);
+            // Create and position the trash item
+            const roadLine = this.physics.add.sprite(
+                this.screenCenterX,
+                - 96, // spawner lige over browser vinduet
+                'roadline'
+            ).setDepth(1);
+
+            const spawnline = this.physics.add.sprite(this.screenCenterX, 128, 'spawnline').setOrigin(0.5, 0);
 
 
-       //  // Move the trash down
-       roadLine.setVelocity(0, (this.gameSpeed));
-       this.stripes.push(roadLine);
+        //  // Move the trash down
+        roadLine.setVelocity(0, (this.gameSpeed));
+        this.stripes.push(roadLine);
+
+        this.physics.add.overlap(roadLine, spawnline, () => {
+        this.LoopRoadSpawn(spawnline);
+    });
     }
 
     SpawnMargin() {
+
         // Create and position the margin item
         const haybaleLeft = this.physics.add.sprite(
             32,
@@ -189,11 +160,40 @@ export class Game extends Scene
             'haybale'
         ).setDepth(1);
 
-       haybaleLeft.setVelocity(0, (this.gameSpeed));
-       haybaleRight.setVelocity(0, (this.gameSpeed));
+        if(this.testBoolean === false) {
+            this.testMarginObject = haybaleRight;
+            this.testBoolean = true;
+        }
+        
+        haybaleLeft.setVelocity(0, (this.gameSpeed));
+        haybaleRight.setVelocity(0, (this.gameSpeed));
 
-       this.obstacles.push(haybaleLeft);
-       this.obstacles.push(haybaleRight);
+        const spawnline = this.physics.add.sprite(this.screenCenterX, 64, 'spawnline').setOrigin(0.5, 0);
+
+        this.obstacles.push(haybaleLeft);
+        this.obstacles.push(haybaleRight);
+
+
+        this.physics.add.overlap(haybaleRight, spawnline, () => {
+            this.LoopMarginSpawn(spawnline);
+        });
+        
+    }
+
+    LoopRoadSpawn(spawnline: Phaser.Physics.Arcade.Sprite) {
+        spawnline.destroy(); // Destroy the spawnline sprite
+        this.SpawnRoad();
+    }
+
+    LoopMarginSpawn(spawnline: Phaser.Physics.Arcade.Sprite) {
+        
+        spawnline.destroy(); // Destroy the spawnline sprite
+        this.SpawnMargin();
+    }
+
+    LoopObstacleSpawn(spawnline: Phaser.Physics.Arcade.Sprite) {
+        spawnline.destroy(); // Destroy the spawnline sprite
+        this.SpawnObstacles();
     }
     
     SpawnObstacles() {
@@ -210,10 +210,16 @@ export class Game extends Scene
             randomImage
         ).setDepth(3).setScale(1);
 
+        const spawnline = this.physics.add.sprite(this.screenCenterX, this.screenCenterY, 'spawnline').setOrigin(0.5, 0);
+
         // Move the trash downwards
         obstacleObject.setVelocity(0, (this.gameSpeed));
 
         this.obstacles.push(obstacleObject);
+
+        this.physics.add.overlap(obstacleObject, spawnline, () => {
+            this.LoopObstacleSpawn(spawnline);
+        });
    }
 
     SetupPlayer() {
@@ -235,10 +241,9 @@ export class Game extends Scene
         console.log(this.cursorIsBeingHeld);
     }
 
-    endGame = () => {
-        console.log("game ended! Your Score: " + this.score);
-        EventBus.emit('score', this.score);
-        EventBus.emit('gameHasEnded', true);           
+    endGame() {
+        EventBus.emit('gameHasEnded', true);   
+        console.log("game ended!");
     }
 
 
