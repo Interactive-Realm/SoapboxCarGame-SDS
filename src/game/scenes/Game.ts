@@ -74,10 +74,13 @@ export class Game extends Scene
         this.SetupCollision();
         this.StartObstacleSpawner();
         this.SetupPoints();
+        this.physics.add.sprite(this.screenCenterX, 64, 'spawnline').setOrigin(0.5, 0);
+        this.add.image(this.screenCenterX, 32, 'haybale').setOrigin(0.5, 0.5);
         // Create a timed recurring event
         
         console.log("Phaser version: " + Phaser.VERSION);
     }
+
     StartRoadSpawner() {
         this.time.addEvent({
             delay: 500, // The delay in milliseconds before the event first triggers
@@ -216,7 +219,6 @@ export class Game extends Scene
     SetupPlayer() {
         this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
         this.physics.add.existing(this.player);
-        
     }
 
     SetupCollision() {
@@ -227,6 +229,7 @@ export class Game extends Scene
         this.cursorIsBeingHeld = true;
         console.log(this.cursorIsBeingHeld);
     }
+
     SetCursorHoldFalse = () =>{
         this.cursorIsBeingHeld = false;
         console.log(this.cursorIsBeingHeld);
