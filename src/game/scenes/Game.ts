@@ -116,6 +116,11 @@ export class Game extends Scene
     }
     console.log("score delay: " + this.scoreTimer.delay);
     }
+    update(time: number, delta: number): void {
+        if(this.cursorIsBeingHeld === false) {
+            this.endGame();
+        }
+    }
 
     updateScoreText() {
         this.points.setText("Distance: " + this.score + " m");
