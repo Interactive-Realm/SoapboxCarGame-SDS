@@ -1,43 +1,41 @@
 import React, { useContext, useEffect, useState } from "react";
 import dbUtility from "../Database/dbUtility";
 import { UserContext } from "../../UserContext";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { UserHighscoreNumber } from "../types";
 
 type Props = {
     onSignUp: () => void;
     score: number;
 };
-
+  
 const Input = ({ onSignUp, score }: Props) => {
-    const [fullname, setFullname] = useState("");
-    const [email, setEmail] = useState("");
+    const { register, handleSubmit, formState: { errors } } = useForm<UserHighscoreNumber>();
     const userInfo = useContext(UserContext)
+    
 
     //var [score, setScore] = useState<number>();
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        userInfo.userInfo = email
-        console.log(userInfo)
+    const onSubmit = async (values: UserHighscoreNumber) => {
+
         try {
             const { data, error } = await dbUtility.CheckUserData(
-                email,
+                values.phonenumber,
                 "sdsusers"
             );
 
             if (error) return;
 
-            if (!data) {
-                await dbUtility.insertUserData(fullname, email, score);
+            else if (!data) {
+                await dbUtility.insertUserData(values.first_name, values.phonenumber, score);
                 onSignUp();
+                userInfo.userInfo = values.phonenumber
                 console.log("Data submitted successfully!");
             } else{
-                await dbUtility.UpdateScore(email, score)
+                await dbUtility.UpdateScore(values.phonenumber, score)
             }
 
             // Call insertUserData function from dbUtility to insert user data
 
-            // Optionally, you can reset the form fields here
-            setFullname("");
-            setEmail("");
             // Optionally, you can perform additional actions after successful submission
            
         } catch (error) {
@@ -46,30 +44,25 @@ const Input = ({ onSignUp, score }: Props) => {
     };
 
     return (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="name" className="text">
-                    Fulde navn
+                   First Name
                 </label>
-                <input
-                    type="text"
-                    id="name"
-                    name="full    name"
-                    placeholder="Dit navn.."
-                    value={fullname}
-                    onChange={(e) => setFullname(e.target.value)}
-                />
+                <br>
+                </br>
+                <input {...register("first_name", {pattern: /^[A-Za-z]+$/i})} />
+                {errors.first_name && (
+                <p>You must submit a valid name </p>
+                )}
+                <br></br>
     
                 <label htmlFor="e-mail" className="text">
-                    E-mail
+                    Phone Number
                 </label>
-                <input
-                    type="text"
-                    id="mail"
-                    name="email"
-                    placeholder="Din e-mail.."
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                <input {...register("phonenumber", {pattern: /^[0-9]{8}/})} />
+                {errors.phonenumber && (
+                <p>You Must submit a Danish phone number</p>
+                )}
     
                 <input type="submit" value="Tilmeld" />
             </form>               

@@ -4,6 +4,7 @@ import dbUtility from "./Database/dbUtility";
 import InputForm from "./Components/InputForm";
 import HighscoreList from "./Components/HighscoreList";
 import { UserContext } from "./../UserContext";
+import { UserHighscoreNumber } from "./types";
 
 var score = 0;
 // Subscribe to score updates
@@ -17,9 +18,7 @@ interface FrontPageProps {
 
 const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
-    const [weeklyHighscores, setWeeklyHighscores] = useState<
-        { name: string; email: string; score: string }[]
-    >([]);
+    const [weeklyHighscores, setWeeklyHighscores] = useState<UserHighscoreNumber[]>([]);
     const userInfo = useContext(UserContext)
 
     useEffect(() => {

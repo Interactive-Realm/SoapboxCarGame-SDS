@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { UserHighscore } from "../types";
+import { UserHighscore, UserHighscoreNumber, UserHighscoreShort } from "../types";
 
 class DBUtility {
     private supabase: SupabaseClient;
@@ -12,14 +12,14 @@ class DBUtility {
     }
 
     async insertUserData(
-        name: string,
-        email: string,
+        first_name: string,
+        phonenumber: string,
         score: number
     ): Promise<void> {
         try {
             const { data, error } = await this.supabase
                 .from("sdsusers") // Replace 'users' with your table name
-                .insert([{ name, email, score }]); // Has to match the database column names
+                .insert([{ first_name, phonenumber, score }]); // Has to match the database column names
 
             if (error) {
                 console.error("Error inserting data:", error);
@@ -34,8 +34,8 @@ class DBUtility {
 
     // Check if user exists in given database
     async CheckUserData(email: string, table: string): Promise<any> {
-        const { data, error } = await this.supabase.rpc("check_email", {
-            email_to_check: email,
+        const { data, error } = await this.supabase.rpc("check_phonenumber", {
+            number_to_check: email,
             table_to_check: table,
         });
         // console.log(data);
@@ -46,22 +46,19 @@ class DBUtility {
         return { data, error };
     }
 
-    async GetHighscore(): Promise<UserHighscore[]> {
-        const { data, error } = await this.supabase
-            .from("sdsusers")
-            .select("name, email, score")
-            .order("score", { ascending: false });
-
-        if (error) {
-            throw new Error(error.message); // Handle error appropriately
-        }
-
-        return data || []; // Return an empty array if data is null
+    async GetHighscore(): Promise<UserHighscoreNumber[]> {
+        let { data, error } = await this.supabase
+        .rpc('get_highscores', {
+          limit_count: 10 as integer,
+        })
+      if (error) console.error(error)
+      else console.log(data)
+    return data;
     }
 
-    async UpdateScore(email: string, score: integer): Promise<any> {
+    async UpdateScore(number: string, score: integer): Promise<any> {
         let { data, error } = await this.supabase.rpc("update_score", {
-            user_email: email,
+            user_number: number,
             user_score: score,
         });
         if (error) console.error(error);
