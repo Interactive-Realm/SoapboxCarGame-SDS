@@ -17,29 +17,23 @@ export class Game extends Scene
     // Game Variables
     private score: number;
     private playerPositionY: number;
-    private playerSpeed: number;
     private gameSpeed: number;
+    private updateGameSpeed: Phaser.Time.TimerEvent;
     private points: GameObjects.Text;
     private scoreTimer: Phaser.Time.TimerEvent;
-    private updateGameSpeed: Phaser.Time.TimerEvent;
     private initialDelay: number;
     private decreaseAmount: number;
 
-    private testBoolean: boolean;
-    private testMarginObject: GameObjects.Sprite;
     // Asset variables
-    player: GameObjects.Image;
+    player: GameObjects.TileSprite;
     obstacles: Phaser.Physics.Arcade.Sprite[] = [];
+    marginObstacles: Phaser.Physics.Arcade.Sprite[] = [];
     stripes: Phaser.Physics.Arcade.Sprite[] = [];
 
     updatePlayerPosition: Function;
 
     cursorIsBeingHeld: boolean;
-
-
     
-    
-
 
     constructor ()
     {
@@ -57,10 +51,8 @@ export class Game extends Scene
         this.playerPositionY = this.screenHeight * 0.75;
         
         // Speed settings
-        this.playerSpeed = 200;
         this.gameSpeed = 300;
 
-        this.testBoolean = false;
 
         this.initialDelay = 150;
         this.decreaseAmount = 0.1;
@@ -137,7 +129,10 @@ export class Game extends Scene
         });
         this.stripes.forEach(function(stripe) {
             stripe.setVelocityY(velocity);
-        })
+        });
+        this.marginObstacles.forEach(function(stripe) {
+            stripe.setVelocityY(velocity);
+        });
         console.log("gamespeed = " + this.gameSpeed);
     }
 
@@ -182,9 +177,8 @@ export class Game extends Scene
 
         const spawnline = this.physics.add.sprite(this.screenCenterX, 64, 'spawnline').setOrigin(0.5, 0);
 
-        this.obstacles.push(haybaleLeft);
-        this.obstacles.push(haybaleRight);
-
+        this.marginObstacles.push(haybaleLeft);
+        this.marginObstacles.push(haybaleRight);
 
         this.physics.add.overlap(haybaleRight, spawnline, () => {
             this.LoopMarginSpawn(spawnline);
@@ -235,12 +229,13 @@ export class Game extends Scene
    }
 
     SetupPlayer() {
-        this.player = this.add.image(this.screenCenterX, this.playerPositionY, 'player').setDepth(3);
-        this.physics.add.existing(this.player);
+        this.player = this.add.tileSprite(this.screenCenterX, this.playerPositionY, 48, 64, 'player').setDepth(3);
+        this.physics.add.existing(this.player, false);
     }
 
     SetupCollision() {
         this.physics.add.overlap(this.player, this.obstacles, this.endGame);
+        this.physics.add.collider(this.player, this.marginObstacles);
     }
     
     SetCursorHoldTrue = () => {
