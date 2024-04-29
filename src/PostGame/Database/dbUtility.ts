@@ -12,14 +12,14 @@ class DBUtility {
     }
 
     async insertUserData(
-        name: string,
+        first_name: string,
         phonenumber: string,
         score: number
     ): Promise<void> {
         try {
             const { data, error } = await this.supabase
                 .from("sdsusers") // Replace 'users' with your table name
-                .insert([{ name, phonenumber, score }]); // Has to match the database column names
+                .insert([{ first_name, phonenumber, score }]); // Has to match the database column names
 
             if (error) {
                 console.error("Error inserting data:", error);
@@ -46,10 +46,10 @@ class DBUtility {
         return { data, error };
     }
 
-    async GetHighscore(): Promise<UserHighscoreNumber> {
+    async GetHighscore(): Promise<UserHighscoreNumber[]> {
         let { data, error } = await this.supabase
         .rpc('get_highscores', {
-          limit_count: 10,
+          limit_count: 10 as integer,
         })
       if (error) console.error(error)
       else console.log(data)

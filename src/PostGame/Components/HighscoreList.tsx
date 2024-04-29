@@ -9,16 +9,16 @@ type Props = {
 
 
   const HighscoreList = ({ highscores }: Props) => {
-    dbUtility.GetHighscore().then((value) => {
-      console.log(value.length); 
-      highscores = value;
-      for (var i = 0; i < 10; i++){
+    // dbUtility.GetHighscore().then((value) => {
+    //   console.log(value.length); 
+    //   highscores = value;
+    //   for (var i = 0; i < 10; i++){
         
-      }
-     }).catch((reason) =>{
-       // Error Solution
+    //   }
+    //  }).catch((reason) =>{
+    //    // Error Solution
  
-     });
+    //  });
   return (
     <ul>
       {highscores.map((item, i) => (

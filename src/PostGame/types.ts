@@ -5,7 +5,7 @@ export type UserHighscore = {
 };
 
 export type UserHighscoreNumber = {
-  name: string;
+  first_name: string;
   phonenumber: string;
   score: string;
 };

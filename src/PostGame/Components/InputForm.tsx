@@ -25,8 +25,8 @@ const Input = ({ onSignUp, score }: Props) => {
 
             if (error) return;
 
-            if (!data) {
-                await dbUtility.insertUserData(values.name, values.phonenumber, score);
+            else if (!data) {
+                await dbUtility.insertUserData(values.first_name, values.phonenumber, score);
                 onSignUp();
                 userInfo.userInfo = values.phonenumber
                 console.log("Data submitted successfully!");
@@ -50,8 +50,8 @@ const Input = ({ onSignUp, score }: Props) => {
                 </label>
                 <br>
                 </br>
-                <input {...register("name", {pattern: /^[A-Za-z]+$/i})} />
-                {errors.name && (
+                <input {...register("first_name", {pattern: /^[A-Za-z]+$/i})} />
+                {errors.first_name && (
                 <p>You must submit a valid name </p>
                 )}
                 <br></br>
