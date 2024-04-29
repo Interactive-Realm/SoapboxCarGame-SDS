@@ -10,4 +10,9 @@ export type UserHighscoreNumber = {
   score: string;
 };
 
+export type UserHighscoreShort = {
+  name: string;
+  score: string;
+};
+
 
