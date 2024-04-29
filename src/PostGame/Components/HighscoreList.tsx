@@ -1,15 +1,10 @@
 import HighscoreItem from './HighscoreElement';
 import dbUtility from '../Database/dbUtility';
+import { UserHighscoreNumber } from '../types';
 
 type Props = {
-  highscores: UserHighscore[];
+  highscores: UserHighscoreNumber[];
 };
-
-type UserHighscore = {
-    name: string;
-    email: string;
-    score: string;
-  };
 
   const HighscoreList = ({ highscores }: Props) => {
     dbUtility.GetHighscore().then((value) => {
@@ -25,7 +20,7 @@ type UserHighscore = {
   return (
     <ul>
       {highscores.map((item, i) => (
-        <HighscoreItem key={item.email} rank={i + 1} highscore={item} />
+        <HighscoreItem key={item.phonenumber} rank={i + 1} highscore={item} />
       ))}
     </ul>
   );

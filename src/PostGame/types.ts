@@ -4,4 +4,10 @@ export type UserHighscore = {
   score: string;
 };
 
+export type UserHighscoreNumber = {
+  name: string;
+  phonenumber: string;
+  score: string;
+};
+
 

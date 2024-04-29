@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { UserHighscore } from "../types";
+import { UserHighscore, UserHighscoreNumber } from "../types";
 
 class DBUtility {
     private supabase: SupabaseClient;
@@ -13,13 +13,13 @@ class DBUtility {
 
     async insertUserData(
         name: string,
-        email: string,
+        phonenumber: string,
         score: number
     ): Promise<void> {
         try {
             const { data, error } = await this.supabase
                 .from("sdsusers") // Replace 'users' with your table name
-                .insert([{ name, email, score }]); // Has to match the database column names
+                .insert([{ name, phonenumber, score }]); // Has to match the database column names
 
             if (error) {
                 console.error("Error inserting data:", error);
@@ -34,8 +34,8 @@ class DBUtility {
 
     // Check if user exists in given database
     async CheckUserData(email: string, table: string): Promise<any> {
-        const { data, error } = await this.supabase.rpc("check_email", {
-            email_to_check: email,
+        const { data, error } = await this.supabase.rpc("check_phonenumber", {
+            number_to_check: email,
             table_to_check: table,
         });
         // console.log(data);
@@ -46,10 +46,10 @@ class DBUtility {
         return { data, error };
     }
 
-    async GetHighscore(): Promise<UserHighscore[]> {
+    async GetHighscore(): Promise<UserHighscoreNumber[]> {
         const { data, error } = await this.supabase
             .from("sdsusers")
-            .select("name, email, score")
+            .select("name, phonenumber, score")
             .order("score", { ascending: false });
 
         if (error) {
@@ -59,9 +59,9 @@ class DBUtility {
         return data || []; // Return an empty array if data is null
     }
 
-    async UpdateScore(email: string, score: integer): Promise<any> {
+    async UpdateScore(number: string, score: integer): Promise<any> {
         let { data, error } = await this.supabase.rpc("update_score", {
-            user_email: email,
+            user_number: number,
             user_score: score,
         });
         if (error) console.error(error);

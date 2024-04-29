@@ -1,8 +1,8 @@
-import { UserHighscore } from "../types";
+import { UserHighscore, UserHighscoreNumber } from "../types";
 
 type Props = {
     rank: number;
-    highscore: UserHighscore;
+    highscore: UserHighscoreNumber;
 };
 
 function formatScore(score: string, length: number = 4): string {

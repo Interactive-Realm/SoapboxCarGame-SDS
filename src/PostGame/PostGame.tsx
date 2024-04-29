@@ -18,7 +18,7 @@ interface FrontPageProps {
 const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
     const [weeklyHighscores, setWeeklyHighscores] = useState<
-        { name: string; email: string; score: string }[]
+        { name: string; phonenumber: string; score: string }[]
     >([]);
     const userInfo = useContext(UserContext)
 
