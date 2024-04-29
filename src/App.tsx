@@ -4,6 +4,7 @@ import { EventBus } from "./EventBus";
 import IntroPage from "./IntroPage";
 import PostGame from "./PostGame/PostGame";
 import { UserContext } from "./UserContext";
+import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 
 function App() {
     // State to track whether the registration scene button is clicked
@@ -47,24 +48,35 @@ function App() {
 
     // ----- The following is the components being rendered ----- //
     return (
-        <UserContext.Provider value={userInfo}>
-            <div id="app">
-                {gameEnd ? (
-                    <PostGame playAgain={handlePlayAgain} />
-                ) : (
-                    <div>
-                        {!gameStarted ? (
-                            <IntroPage onButtonClick={handleGameButtonClick} />
-                        ) : (
-                            <PhaserGame
-                                ref={phaserRef}
-                                currentActiveScene={currentScene}
-                            />
-                        )}
-                    </div>
-                )}
-            </div>
-        </UserContext.Provider>
+
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/institutdysten2024"
+          element={<UserContext.Provider value={userInfo}>
+          <div id="app">
+              {gameEnd ? (
+                  <PostGame playAgain={handlePlayAgain} />
+              ) : (
+                  <div>
+                      {!gameStarted ? (
+                          <IntroPage onButtonClick={handleGameButtonClick} />
+                      ) : (
+                          <PhaserGame
+                              ref={phaserRef}
+                              currentActiveScene={currentScene}
+                          />
+                      )}
+                  </div>
+              )}
+          </div>
+      </UserContext.Provider>}
+        />
+        <Route path="*" element={<Navigate to='/institutdysten2024' />} />
+      </Routes>
+      
+    </BrowserRouter>
+        
     );
 }
 
