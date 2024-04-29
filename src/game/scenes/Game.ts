@@ -22,6 +22,8 @@ export class Game extends Scene
     private points: GameObjects.Text;
     private scoreTimer: Phaser.Time.TimerEvent;
     private updateGameSpeed: Phaser.Time.TimerEvent;
+    private initialDelay: number;
+    private decreaseAmount: number;
 
     private testBoolean: boolean;
     private testMarginObject: GameObjects.Sprite;
@@ -60,6 +62,8 @@ export class Game extends Scene
 
         this.testBoolean = false;
 
+        this.initialDelay = 150;
+        this.decreaseAmount = 0.1;
     }
     
     init(data: any) {
@@ -80,7 +84,7 @@ export class Game extends Scene
         this.SpawnObstacles();
 
         this.scoreTimer = this.time.addEvent({
-            delay: 25, // Increment score every 1000 milliseconds (1 second)
+            delay: this.initialDelay, // Increment score every 1000 milliseconds (1 second)
             callback: this.UpdateScore,
             callbackScope: this,
             loop: true
@@ -103,9 +107,22 @@ export class Game extends Scene
     }
 
     UpdateScore() {
-        
         this.score += 1;
         this.updateScoreText();
+
+    // Decrease the delay for the next iteration
+    let nextDelay = this.scoreTimer.delay - this.decreaseAmount;
+    if (nextDelay > 50) {
+        // Recreate the timer with the new delay
+        this.scoreTimer.remove(false); // Remove the current timer without clearing the callback
+        this.scoreTimer = this.time.addEvent({
+            delay: nextDelay,
+            callback: this.UpdateScore,
+            callbackScope: this,
+            loop: true
+    });
+    }
+    console.log("score delay: " + this.scoreTimer.delay);
     }
 
     updateScoreText() {
