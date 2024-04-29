@@ -6,6 +6,8 @@ type Props = {
   highscores: UserHighscoreNumber[];
 };
 
+
+
   const HighscoreList = ({ highscores }: Props) => {
     dbUtility.GetHighscore().then((value) => {
       console.log(value.length); 
