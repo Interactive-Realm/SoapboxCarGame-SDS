@@ -71,7 +71,7 @@ export class Game extends Scene
         this.MovePlayer();
         this.SetupCollision();
         this.SetupPoints();
-        this.SpawnMargin();
+        //this.SpawnMargin();
         this.SpawnRoad();
         this.SpawnObstacles();
 
@@ -115,6 +115,11 @@ export class Game extends Scene
     });
     }
     console.log("score delay: " + this.scoreTimer.delay);
+    }
+    update(time: number, delta: number): void {
+        if(this.cursorIsBeingHeld === false) {
+            this.endGame();
+        }
     }
 
     updateScoreText() {
@@ -211,7 +216,7 @@ export class Game extends Scene
 
         // Create and position the trash item
         const obstacleObject = this.physics.add.sprite(
-            Phaser.Math.Between(64+32, (this.screenWidth-32-64)),
+            Phaser.Math.Between(32, this.screenWidth-32),
             - 32, // spawner lige over browser vinduet
             randomImage
         ).setDepth(3).setScale(1);
