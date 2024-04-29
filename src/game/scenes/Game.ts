@@ -23,6 +23,8 @@ export class Game extends Scene
     private scoreTimer: Phaser.Time.TimerEvent;
     private initialDelay: number;
     private decreaseAmount: number;
+    private gameStarted: boolean;
+    private instructions: GameObjects.Text;
 
     // Asset variables
     player: GameObjects.TileSprite;
@@ -41,6 +43,8 @@ export class Game extends Scene
     }
 
     preload() {
+        this.gameStarted = false;
+
         // Center of screen
         this.screenCenterX = (this.sys.game.config.width as number) / 2;
         this.screenCenterY = (this.sys.game.config.height as number) / 2;
@@ -71,9 +75,22 @@ export class Game extends Scene
         this.MovePlayer();
         this.SetupCollision();
         this.SetupPoints();
+        
+        this.instructions = this.add.text(this.screenCenterX, this.screenCenterY/2, "Click and hold to move the car\nAvoid opstacles\nDon't release hold\n\nGo as far as possible!");
+        this.instructions.setFontSize(25).setOrigin(0.5, 0.5).setAlign("center");
+        this.instructions.setColor("white");
+
+        // Create a timed recurring event
+        
+        console.log("Phaser version: " + Phaser.VERSION);
+    }
+
+    StartGame = () => {
+        console.log("Starting game");
         //this.SpawnMargin();
         this.SpawnRoad();
         this.SpawnObstacles();
+        this.instructions.destroy();
 
         this.scoreTimer = this.time.addEvent({
             delay: this.initialDelay, // Increment score every 1000 milliseconds (1 second)
@@ -88,12 +105,7 @@ export class Game extends Scene
             callbackScope: this,
             loop: true
         });
-
-        // Create a timed recurring event
-        
-        console.log("Phaser version: " + Phaser.VERSION);
     }
-
     SetupPoints() {
         this.points = this.add.text(this.screenCenterX, this.screenHeight/30, "").setDepth(2).setFontSize(28).setOrigin(0.5,0);
     }
@@ -102,21 +114,22 @@ export class Game extends Scene
         this.score += 1;
         this.updateScoreText();
 
-    // Decrease the delay for the next iteration
-    let nextDelay = this.scoreTimer.delay - this.decreaseAmount;
-    if (nextDelay > 50) {
-        // Recreate the timer with the new delay
-        this.scoreTimer.remove(false); // Remove the current timer without clearing the callback
-        this.scoreTimer = this.time.addEvent({
-            delay: nextDelay,
-            callback: this.UpdateScore,
-            callbackScope: this,
-            loop: true
-    });
-    }
-    console.log("score delay: " + this.scoreTimer.delay);
+        // Decrease the delay for the next iteration
+        let nextDelay = this.scoreTimer.delay - this.decreaseAmount;
+        if (nextDelay > 50) {
+            // Recreate the timer with the new delay
+            this.scoreTimer.remove(false); // Remove the current timer without clearing the callback
+            this.scoreTimer = this.time.addEvent({
+                delay: nextDelay,
+                callback: this.UpdateScore,
+                callbackScope: this,
+                loop: true
+        });
+        }
+        console.log("score delay: " + this.scoreTimer.delay);
     }
     update(time: number, delta: number): void {
+
         if(this.cursorIsBeingHeld === false) {
             this.endGame();
         }
@@ -263,8 +276,10 @@ export class Game extends Scene
     MovePlayer() {
 
         
+        
         this.input.on('pointerdown', this.SetCursorHoldTrue);
         this.input.on('pointerup', this.SetCursorHoldFalse);
+        this.input.on('pointerdown', this.StartGame);
 
         this.updatePlayerPosition = function(pointer: Phaser.Input.Pointer) {
             this.player.x = pointer.x;
