@@ -16,9 +16,7 @@ const Input = ({ onSignUp, score }: Props) => {
 
     //var [score, setScore] = useState<number>();
     const onSubmit = async (values: UserHighscoreNumber) => {
-        //event.preventDefault();
-        userInfo.userInfo = values.phonenumber
-        console.log(userInfo)
+
         try {
             const { data, error } = await dbUtility.CheckUserData(
                 values.phonenumber,
@@ -30,6 +28,7 @@ const Input = ({ onSignUp, score }: Props) => {
             if (!data) {
                 await dbUtility.insertUserData(values.name, values.phonenumber, score);
                 onSignUp();
+                userInfo.userInfo = values.phonenumber
                 console.log("Data submitted successfully!");
             } else{
                 await dbUtility.UpdateScore(values.phonenumber, score)
