@@ -21,12 +21,9 @@ const FrontPage: React.FC<FrontPageProps> = ({ onButtonClick }) => {
     return (
         <div>
             <div className="text">
-                Velkommen til spillet.
-                <br />
-                Vær med i konkurrencen om de fede præmier. Bl.a. 1 mio. danske kroner i kontanter.
-                <br />
-                <br />
-                <br />            
+                Velkommen til Soapbox Showdown
+                <br></br>       
+                <br></br>
             </div>
             <div style={{textAlign: "center"}}>
                 {/* Attaching onClick event to the button */}
