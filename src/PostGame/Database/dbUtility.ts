@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { UserHighscore, UserHighscoreNumber } from "../types";
+import { UserHighscore, UserHighscoreNumber, UserHighscoreShort } from "../types";
 
 class DBUtility {
     private supabase: SupabaseClient;
@@ -46,17 +46,14 @@ class DBUtility {
         return { data, error };
     }
 
-    async GetHighscore(): Promise<UserHighscoreNumber[]> {
-        const { data, error } = await this.supabase
-            .from("sdsusers")
-            .select("name, phonenumber, score")
-            .order("score", { ascending: false });
-
-        if (error) {
-            throw new Error(error.message); // Handle error appropriately
-        }
-
-        return data || []; // Return an empty array if data is null
+    async GetHighscore(): Promise<UserHighscoreNumber> {
+        let { data, error } = await this.supabase
+        .rpc('get_highscores', {
+          limit_count: 10,
+        })
+      if (error) console.error(error)
+      else console.log(data)
+    return data;
     }
 
     async UpdateScore(number: string, score: integer): Promise<any> {
