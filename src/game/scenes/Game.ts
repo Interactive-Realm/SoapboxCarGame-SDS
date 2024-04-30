@@ -42,6 +42,7 @@ export class Game extends Scene
     private instructions: GameObjects.Text;
     private instructions2: GameObjects.Text;
     private tapToStart: GameObjects.Text;
+    private noRelease: GameObjects.Text;
 
 
     updatePlayerPosition: Function;
@@ -83,7 +84,6 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x141729);
-        this.irlogo = this.add.image(this.screenCenterX/8, this.screenCenterY/12, 'ir-logo').setOrigin(0,0.5);
         this.SetupPlayer();
         this.MovePlayer();
         this.SetupCollision();
@@ -96,6 +96,8 @@ export class Game extends Scene
     }
 
     SetupInstructions() {
+        this.irlogo = this.add.image(this.screenCenterX/8, this.screenCenterY/12, 'ir-logo').setOrigin(0,0.5);
+
         this.welcomeText = this.add.text(this.screenCenterX, this.screenCenterY/5, 'Welcome to Soapbox Showdown!'); 
         this.welcomeText.setColor('#ffffff').setOrigin(0.5,0.5).setFontStyle('bold');
         
@@ -117,11 +119,15 @@ export class Game extends Scene
             });
         this.instructions2.setColor('#ffffff').setOrigin(0.5,0).setAlign('center');
 
-        this.tapToStart = this.add.text(this.welcomeText.x, this.instructions2.y + this.instructionsPage_ObjectDistance+40, 'TAP ANYWHERE TO START');
+        this.tapToStart = this.add.text(this.welcomeText.x, this.instructions2.y + this.instructionsPage_ObjectDistance+40, "TOUCH AND HOLD TO DRIVE");
         this.tapToStart.setColor('#66F0D7').setOrigin(0.5,0.5).setAlign('center');
+
+        this.noRelease = this.add.text(this.welcomeText.x, this.tapToStart.y+ 22, "RELEASING THE HOLD WILL END THE GAME");
+        this.noRelease.setColor('#F57373').setOrigin(0.5,0.5).setAlign('center');
     }
 
     RemoveInstructions() {
+        this.irlogo.destroy();
         this.welcomeText.destroy();
         this.instructions.destroy();
         this.scoreShowcase.destroy();
