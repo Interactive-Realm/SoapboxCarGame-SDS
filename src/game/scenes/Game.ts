@@ -276,7 +276,7 @@ export class Game extends Scene
     
     SpawnObstacles() {
         // Array containing filenames of the images
-        const obstacleImages = ['tire', 'haybale'];
+        const obstacleImages = ['tire', 'haybale', 'cone'];
 
         // Randomly select an image filename from the array
         const randomImage = Phaser.Math.RND.pick(obstacleImages);
