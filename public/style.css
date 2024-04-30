@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Josefin+Sans);
+
 body {
     background-color: #141729;
 }
@@ -97,6 +99,7 @@ body {
     align-items: center; /* Vertically center the content */
     margin: auto; /* Center the button horizontally within its container */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     padding: 20px 50px;
 
@@ -119,4 +122,15 @@ body {
     border: 1px solid #FFFFFF;
     border-radius: 100px;
 
+}
+
+#subtitle{
+  color: #66F0D7;
+  font-size: 20px;
+  font-family: 'JetBrains Mono';
+}
+
+#title{
+  font-size: 40px;
+  font-family: 'Josefin Sans';
 }
