@@ -32,11 +32,13 @@ export class Preloader extends Scene
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
         this.load.image('road', 'placeholder_road.png');
-        this.load.image('player', 'placeholder_player.png');
-        this.load.image('haybale', 'placeholder_haybale.png');
-        this.load.image('obstacle', 'placeholder_obstacle.png');
+        this.load.image('player', 'car.png');
+        this.load.image('haybale', 'haybale.png');
+        this.load.image('tire', 'cartire.png');
         this.load.image('roadline', 'roadline.png');
         this.load.image('spawnline', 'spawnline.png');
+        this.load.image('ir-logo', 'ir-logo-phaser.png');
+        this.load.image('instructions', 'instructions.png');
     }
 
     create ()
