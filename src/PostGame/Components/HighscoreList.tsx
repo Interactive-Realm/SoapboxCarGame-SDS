@@ -20,11 +20,14 @@ type Props = {
  
     //  });
   return (
+    <div>
+
     <ul>
       {highscores.map((item, i) => (
         <HighscoreItem key={item.phonenumber} rank={i + 1} highscore={item} />
       ))}
     </ul>
+    </div>
   );
 };
 

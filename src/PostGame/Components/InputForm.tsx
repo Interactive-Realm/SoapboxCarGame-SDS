@@ -45,28 +45,44 @@ const Input = ({ onSignUp, score }: Props) => {
     };
 
     return (
+        <div id="highscore">
+            <h2 id="subtitle2"> SIGN UP</h2>
+            <p id="inputformtext"> We'll remeber you, the next time you play</p>
+            <div>
+            <img src="/assets/Group44.png" alt="IS Logo" className='fp-car-picture'></img>
+            </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="name" className="text">
-                   First Name
+                <label htmlFor="name" >
+                   Display Name
                 </label>
-                <br>
-                </br>
+                <p id="formtext">
+                    This will be visible on the Leaderboard
+                </p>
                 <input {...register("first_name", {pattern: /^[A-Za-z]+$/i})} />
                 {errors.first_name && (
                 <p>You must submit a valid name </p>
                 )}
-                <br></br>
     
-                <label htmlFor="e-mail" className="text">
+                <label htmlFor="e-mail">
                     Phone Number
                 </label>
+
+          
                 <input {...register("phonenumber", {pattern: /^\b[0-9]{8}\b/})} />
                 {errors.phonenumber && (
                 <p>You Must submit a Danish phone number</p>
                 )}
+
+                <p id="tos">
+
+                By signing up, you consent to Interactive Realm temporarily storing your display name and e-mail for up to 24 hours. 
+                We do not collect or store this data beyond the specified time, nor will we hand over this data to any third party.
+
+                </p>
     
-                <input type="submit" value="Tilmeld" />
-            </form>               
+                <input type="submit" value="Proceed" className="buttonwhitesmall"/>
+            </form>   
+            </div>            
     );
 };
 

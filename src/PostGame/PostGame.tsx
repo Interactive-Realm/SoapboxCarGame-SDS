@@ -47,14 +47,12 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
 
     return (
         <div>
-            <div>
-                <h1>
-                    DIN SCORE: {score}
-                </h1>
-            </div>
+            <img src="/assets/is-logo.png" alt="IS Logo" className='islogo'></img>
 
             {isSignedIn ? (
                 <>
+                    <p>Your Score</p>
+                <h2> </h2>
                     <HighscoreList
                         highscores={weeklyHighscores}
                     ></HighscoreList>
