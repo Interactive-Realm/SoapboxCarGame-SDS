@@ -9,7 +9,7 @@ import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-route
 
 function App() {
     // State to track whether the registration scene button is clicked
-    const [gameEnd, setGameEnd] = useState(true);
+    const [gameEnd, setGameEnd] = useState(false);
 
     // State to track whether the game button is clicked
     const [gameStarted, setGameStarted] = useState(false);
