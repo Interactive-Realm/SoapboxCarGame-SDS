@@ -115,7 +115,7 @@ body {
 
 }
 
-#highscore{
+#inputform{
   justify-content: center;
   text-align: center;
   width: 100%;
@@ -201,4 +201,59 @@ input{
   font-size: 4vw;
 
 }
+
+ul{
+  padding-inline-start: 0;
+}
+
+#highscore_list{
+  list-style-type: none;
+  width: 100%;
+  text-align: center;
+  display: grid;
+  gap: 1vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline-start: 0;
+  justify-items: center;
+}
+
+#highscore_element{
+  font-family: 'JetBrains Mono';
+}
+
+#highscore_element2{
+  width: 100%;
+  display: inline-block;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  position: relative;
+  display: flex;
+  gap: 2vw;  
+}
+
+#highscore_element3{
+  width: 60%;  
+}
+
+
+#highscore{
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height:auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+#buttonctn{
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
 

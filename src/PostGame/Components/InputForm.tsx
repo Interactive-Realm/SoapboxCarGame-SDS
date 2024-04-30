@@ -45,7 +45,7 @@ const Input = ({ onSignUp, score }: Props) => {
     };
 
     return (
-        <div id="highscore">
+        <div id="inputform">
             <h2 id="subtitle2"> SIGN UP</h2>
             <p id="inputformtext"> We'll remeber you, the next time you play</p>
             <div>
