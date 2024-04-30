@@ -1,4 +1,0 @@
-Global Drag is better
-Slower point (distance) gain
-No kill on margin (Could slow down vehicle)
-Shouldn't teleport on click
