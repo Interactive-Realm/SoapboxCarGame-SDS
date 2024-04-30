@@ -19,18 +19,18 @@ const FrontPage: React.FC<FrontPageProps> = ({ onButtonClick }) => {
     };
 
     return (
-        <div>
+        <div id="app">
             <img src="/assets/is-logo.png" alt="IS Logo" className='islogo'></img>
+            
              <div className="headline">
                 Institutdysten
             </div>
             <div className='underheadline'>by SDS</div>
 
             <div className='infotext'>Lorem ipsum and secure your faculty in the leaderboard to win a special prize!</div>
-            <div>
+         
                 <img src="assets/CarLogo.png" className='fp-car-picture'></img>
-            </div>
-            
+               
             
             <div className='gamename-text'>SOAPBOX SHOWDOWN</div>
             

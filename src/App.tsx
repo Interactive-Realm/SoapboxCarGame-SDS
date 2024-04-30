@@ -3,12 +3,13 @@ import { IRefPhaserGame, PhaserGame } from "./game/PhaserGame";
 import { EventBus } from "./EventBus";
 import IntroPage from "./IntroPage";
 import PostGame from "./PostGame/PostGame";
+import Highscore from "./HighscoreStandAlone";
 import { UserContext } from "./UserContext";
 import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 
 function App() {
     // State to track whether the registration scene button is clicked
-    const [gameEnd, setGameEnd] = useState(false);
+    const [gameEnd, setGameEnd] = useState(true);
 
     // State to track whether the game button is clicked
     const [gameStarted, setGameStarted] = useState(false);
@@ -48,31 +49,33 @@ function App() {
 
     // ----- The following is the components being rendered ----- //
     return (
-
+       
     <BrowserRouter>
       <Routes>
         <Route
           path="/institutdysten2024"
-          element={<UserContext.Provider value={userInfo}>
-          <div id="app">
-              {gameEnd ? (
-                  <PostGame playAgain={handlePlayAgain} />
-              ) : (
-                  <div>
-                      {!gameStarted ? (
-                          <IntroPage onButtonClick={handleGameButtonClick} />
-                      ) : (
-                          <PhaserGame
-                              ref={phaserRef}
-                              currentActiveScene={currentScene}
-                          />
-                      )}
-                  </div>
-              )}
-          </div>
-      </UserContext.Provider>}
+          element={
+            <UserContext.Provider value={userInfo}>
+                <div id="app">
+                    {gameEnd ? (
+                        <PostGame playAgain={handlePlayAgain} />
+                        ) : (
+                        <div>
+                            {!gameStarted ? (
+                            <IntroPage onButtonClick={handleGameButtonClick} />
+                            ) : (
+                            <PhaserGame
+                            ref={phaserRef}
+                            currentActiveScene={currentScene}
+                            />
+                            )}
+                        </div>
+                    )}
+                </div>
+            </UserContext.Provider>}
         />
-        <Route path="*" element={<Navigate to='/institutdysten2024' />} />
+        <Route path="/*" element={<Navigate to='/institutdysten2024' />} />
+        <Route path="/highscore" element={<Highscore/>} />
       </Routes>
       
     </BrowserRouter>
