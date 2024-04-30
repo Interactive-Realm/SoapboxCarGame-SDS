@@ -29,7 +29,10 @@ function Highscore() {
     }, )
 
 
-
+    dbUtility.GetHighscore().then((highscores) => {
+        setWeeklyHighscores(highscores);
+        console.log("Test")
+    });
 
 
     return (
@@ -38,7 +41,7 @@ function Highscore() {
 
             <div>
                 <HighscoreList
-                    highscores={weeklyHighscores}
+                    highscores={weeklyHighscores} loaduserscore={false}
                 ></HighscoreList>         
             </div>
 

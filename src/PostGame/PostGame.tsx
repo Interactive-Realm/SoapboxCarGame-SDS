@@ -53,7 +53,7 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
             {isSignedIn ? (
                 <>
                     <HighscoreList
-                        highscores={weeklyHighscores}
+                        highscores={weeklyHighscores} loaduserscore={true}
                     ></HighscoreList>
 
                     <div id="buttonctn">
