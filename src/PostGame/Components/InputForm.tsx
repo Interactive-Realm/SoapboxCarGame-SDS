@@ -47,7 +47,7 @@ const Input = ({ onSignUp, score }: Props) => {
     return (
         <div id="inputform">
             <h2 id="subtitle2"> SIGN UP</h2>
-            <p id="inputformtext"> We'll remeber you, the next time you play</p>
+            <p id="inputformtext"> We'll remember you, the next time you play</p>
             <div>
             <img src="/assets/Group44.png" alt="IS Logo" className='fp-car-picture'></img>
             </div>
@@ -60,7 +60,7 @@ const Input = ({ onSignUp, score }: Props) => {
                 </p>
                 <input {...register("first_name", {pattern: /^[A-Za-z]+$/i})} />
                 {errors.first_name && (
-                <p>You must submit a valid name </p>
+                <p id="highscore_element">You must submit a valid name </p>
                 )}
     
                 <label htmlFor="e-mail">
@@ -70,7 +70,7 @@ const Input = ({ onSignUp, score }: Props) => {
           
                 <input {...register("phonenumber", {pattern: /^\b[0-9]{8}\b/})} />
                 {errors.phonenumber && (
-                <p>You Must submit a Danish phone number</p>
+                <p id="highscore_element">You Must submit a Danish phone number</p>
                 )}
 
                 <p id="tos">
