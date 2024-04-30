@@ -20,7 +20,7 @@ const FrontPage: React.FC<FrontPageProps> = ({ onButtonClick }) => {
 
     return (
         <div>
-            <img src="/assets/is-logo.png" alt="IS Logo" className='islogo'></img>
+            <img src="/assets/ir-logo.png" alt="IR Logo" className='irlogo'></img>
              <div className="headline">
                 Institutdysten
             </div>

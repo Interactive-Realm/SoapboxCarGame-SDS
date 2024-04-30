@@ -2,8 +2,7 @@ body {
     background-color: #141729;
 }
 
-
-.islogo {
+.irlogo {
     position: absolute;
     width: 20vw;
     left: 5%;
@@ -36,13 +35,6 @@ body {
     color: #FFFFFF;
 }
 
-
-
-
-
-
-
-
 .infotext {
     margin: auto;
     margin-top: 2vw;
@@ -67,10 +59,6 @@ body {
 
     color: #FFFFFF;
 }
-
-
-
-
 
 .gamename-text {
     margin: auto;
