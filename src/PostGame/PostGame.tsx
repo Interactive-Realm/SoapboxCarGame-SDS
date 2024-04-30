@@ -6,10 +6,10 @@ import HighscoreList from "./Components/HighscoreList";
 import { UserContext } from "./../UserContext";
 import { UserHighscoreNumber } from "./types";
 
-var score = 0;
+var score = "";
 // Subscribe to score updates
 EventBus.on("score", (data: number) => {
-    score = data;
+    score = data.toString();
 });
 
 interface FrontPageProps {
@@ -20,11 +20,12 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
     const [weeklyHighscores, setWeeklyHighscores] = useState<UserHighscoreNumber[]>([]);
     const userInfo = useContext(UserContext)
+    userInfo.score = score;
 
     useEffect(() => {
         if(userInfo.userInfo != ""){
             console.log(isSignedIn)
-            dbUtility.UpdateScore(userInfo.userInfo, score);
+            dbUtility.UpdateScore(userInfo.userInfo, parseInt(userInfo.score));
             handleSignUp();
             
             
@@ -51,23 +52,21 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
 
             {isSignedIn ? (
                 <>
-                    <p>Your Score</p>
-                <h2> </h2>
                     <HighscoreList
                         highscores={weeklyHighscores}
                     ></HighscoreList>
 
-                    <div className="text">
-                        <input
+                    <div id="buttonctn">
+                        <input className="buttonwhitesmall"
                             type="submit"
                             onClick={handlePlayAgain}
-                            value="Spil igen"
+                            value="Play Again"
                         />
                     </div>
                 </>
             ) : (
                 <>
-                    <InputForm onSignUp={handleSignUp} score={score} />
+                    <InputForm onSignUp={handleSignUp} score={ parseInt(userInfo.score)} />
                 </>
             )}
         </div>
