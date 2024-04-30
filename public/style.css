@@ -256,4 +256,37 @@ ul{
   padding-right: 20%;
 }
 
+.QR{
+  
+  width: 50%;
+  height: 50%;
+  object-fit: scale-down;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  
+}
+
+.qrctn{
+  
+
+  justify-content: center;
+  
+}
+
+.scoreText{
+  margin-block-start: 0;
+  margin-block-end: 0;
+  color: #66F0D7;
+  font-size: 40px;
+  font-family: 'JetBrains Mono';
+}
+
+.scoreTitle{
+  margin-block-start: 0;
+  margin-block-end: 0;
+  font-size: 10px;
+}
+
 

@@ -19,20 +19,17 @@ function Highscore() {
 
             //UpdateHighscore();
 
-        }, 5000);
+        }, 15000);
 
         return () => clearInterval(interval);
 
 
 
             
-    }, )
+    }, [])
 
 
-    dbUtility.GetHighscore().then((highscores) => {
-        setWeeklyHighscores(highscores);
-        console.log("Test")
-    });
+
 
 
     return (
@@ -44,6 +41,10 @@ function Highscore() {
                     highscores={weeklyHighscores} loaduserscore={false}
                 ></HighscoreList>         
             </div>
+            <div className="qrctn">
+            <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
+            </div>
+
 
    
         </div>

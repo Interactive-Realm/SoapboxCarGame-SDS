@@ -18,13 +18,14 @@ const HighscoreList = ({ highscores, loaduserscore }: Props) => {
                 <h2 id="subtitle">SOAPBOX SHOWDOWN</h2>
                 {loaduserscore ? (
                     <div>
-                        <p id="highscore_element">Your Score</p>
-                        <h2 id="subtitle">{userInfo.score}</h2>
-                        <h1 id="title">Leaderboard</h1>
+                        <p id="highscore_element" className="scoreTitle">Your Score</p>
+                        <p className="scoreText">{userInfo.score}</p>
                     </div>
                 ) : (
                     <div />
                 )}
+
+                <h1 id="title">Leaderboard</h1>
             </div>
             <ul id="highscore_list">
                 {highscores.map((item, i) =>
