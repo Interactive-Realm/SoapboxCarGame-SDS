@@ -23,7 +23,6 @@ export class Game extends Scene
     private scoreTimer: Phaser.Time.TimerEvent;
     private initialDelay: number;
     private decreaseAmount: number;
-    private gameStarted: boolean;
     private instructions: GameObjects.Text;
 
     // Asset variables
@@ -43,7 +42,6 @@ export class Game extends Scene
     }
 
     preload() {
-        this.gameStarted = false;
 
         // Center of screen
         this.screenCenterX = (this.sys.game.config.width as number) / 2;
@@ -267,6 +265,9 @@ export class Game extends Scene
     }
 
     endGame = () => {
+        
+        this.SetCursorHoldFalse(); // This is to remove error that comes from updating player position after game ended
+
         console.log("game ended! Your Score: " + this.score);
         EventBus.emit('score', this.score);
         EventBus.emit('gameHasEnded', true);           
