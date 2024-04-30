@@ -39,6 +39,7 @@ export class Preloader extends Scene
         this.load.image('spawnline', 'spawnline.png');
         this.load.image('ir-logo', 'ir-logo-phaser.png');
         this.load.image('instructions', 'instructions.png');
+        this.load.image('cone', 'trafficcone.png');
     }
 
     create ()
