@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import HighscoreItem from './HighscoreElement';
 import dbUtility from '../Database/dbUtility';
 import { UserHighscoreNumber } from '../types';
+import { UserContext } from '../../UserContext';
 
 type Props = {
   highscores: UserHighscoreNumber[];
@@ -9,24 +11,37 @@ type Props = {
 
 
   const HighscoreList = ({ highscores }: Props) => {
-    // dbUtility.GetHighscore().then((value) => {
-    //   console.log(value.length); 
-    //   highscores = value;
-    //   for (var i = 0; i < 10; i++){
-        
-    //   }
-    //  }).catch((reason) =>{
-    //    // Error Solution
- 
-    //  });
-  return (
-    <div>
+    const userInfo = useContext(UserContext)
 
-    <ul>
+  return (
+    <div id="highscore">
+      <div id="titlecontainer">
+                <h2 id="subtitle">
+                    SOAPBOX SHOWDOWN
+                </h2>
+
+                <p id="highscore_element">Your Score</p>
+                <h2 id="subtitle">{userInfo.score}</h2>
+
+                <h1 id="title">
+                    Leaderboard
+                </h1>
+
+            </div>
+    <ul id="highscore_list">
       {highscores.map((item, i) => (
-        <HighscoreItem key={item.phonenumber} rank={i + 1} highscore={item} />
+        i == 2 ? (
+        <div id="highscore_element3"><HighscoreItem key={item.phonenumber} rank={i + 1} highscore={item} />
+        <hr id="line_top3"></hr>
+        </div>
+        ) : (
+          <div id="highscore_element3"><HighscoreItem key={item.phonenumber} rank={i + 1} highscore={item} />
+          </div>)
+
       ))}
     </ul>
+
+    
     </div>
   );
 };
