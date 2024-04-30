@@ -52,7 +52,7 @@ class DBUtility {
           limit_count: 10 as integer,
         })
       if (error) console.error(error)
-      else console.log(data)
+      //else console.log(data)
     return data;
     }
 

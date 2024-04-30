@@ -23,7 +23,7 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     userInfo.score = score;
 
     useEffect(() => {
-        if(userInfo.userInfo != ""){
+        if(JSON.parse(localStorage.getItem('userinfo')!) != null){
             console.log(isSignedIn)
             dbUtility.UpdateScore(userInfo.userInfo, parseInt(userInfo.score));
             handleSignUp();

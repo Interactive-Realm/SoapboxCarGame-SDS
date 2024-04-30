@@ -8,6 +8,9 @@ import { UserContext } from "./UserContext";
 import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 
 function App() {
+
+    
+    
     // State to track whether the registration scene button is clicked
     const [gameEnd, setGameEnd] = useState(false);
 
@@ -15,6 +18,10 @@ function App() {
     const [gameStarted, setGameStarted] = useState(false);
 
     const userInfo = useContext(UserContext);
+
+    //console.log("Localstorage: " + JSON.parse(localStorage.getItem('userinfo')!)); // LOCAL STORAGE DEBUG
+    
+
 
     useEffect(() => {
         // Function to handle event emitted from Phaser
