@@ -23,6 +23,7 @@ export class Game extends Scene
     private scoreTimer: Phaser.Time.TimerEvent;
     private initialDelay: number;
     private decreaseAmount: number;
+    private gameEnded: boolean;
     
 
     // Asset variables
@@ -72,6 +73,8 @@ export class Game extends Scene
         this.decreaseAmount = 0.1;
 
         this.instructionsPage_ObjectDistance = 50;
+
+        this.gameEnded = false;
 
     }
     
@@ -179,12 +182,11 @@ export class Game extends Scene
                 loop: true
         });
         }
-        console.log("score delay: " + this.scoreTimer.delay);
     }
     update(time: number, delta: number): void {
 
-        if(this.cursorIsBeingHeld === false) {
-            this.endGame();
+        if(this.cursorIsBeingHeld === false && this.gameEnded === false) {
+            this.triggerEndGame();
         }
     }
 
@@ -204,7 +206,6 @@ export class Game extends Scene
         this.marginObstacles.forEach(function(stripe) {
             stripe.setVelocityY(velocity);
         });
-        console.log("gamespeed = " + this.gameSpeed);
     }
 
     SpawnRoad(){
@@ -311,7 +312,7 @@ export class Game extends Scene
     }
 
     SetupCollision() {
-        this.physics.add.overlap(this.player, this.obstacles, this.endGame);
+        this.physics.add.overlap(this.player, this.obstacles, this.triggerEndGame);
         this.physics.add.collider(this.player, this.marginObstacles);
     }
     
@@ -325,13 +326,30 @@ export class Game extends Scene
         console.log(this.cursorIsBeingHeld);
     }
 
+    triggerEndGame = () => {
+        if(this.gameEnded === false) {
+            console.log("BALLS!");
+            this.endGame();
+        }
+        this.gameEnded = true;
+    }
+
     endGame = () => {
-        
-        this.SetCursorHoldFalse(); // This is to remove error that comes from updating player position after game ended
+        this.cameras.main.fadeOut(1500, 0, 0, 0);
+        this.SetCursorHoldFalse();
 
         console.log("game ended! Your Score: " + this.score);
         EventBus.emit('score', this.score);
-        EventBus.emit('gameHasEnded', true);           
+
+        this.time.addEvent({
+            delay: 2000, 
+            callback: function() {
+                EventBus.emit('gameHasEnded', true);
+            },
+            callbackScope: this,
+            loop: false
+        });
+        
     }
 
 
