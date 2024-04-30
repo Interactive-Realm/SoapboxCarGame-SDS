@@ -11,12 +11,12 @@ function formatScore(score: string, length: number = 4): string {
 
 const HighscoreItem = ({ rank, highscore }: Props) => {
     return (
-        <li>
-            <span>
-                <span>{rank} </span>
-                <span>{highscore.name} </span>
+        <li id="highscore_element">
+            <span id="highscore_element2">
+                <span id="hsrank">{rank} </span>
+                <span id="hsname">{highscore.name} </span>
+                <span id="hsscore">{formatScore(highscore.score)}</span>
             </span>
-            <span>{formatScore(highscore.score)}</span>
         </li>
     );
 };
