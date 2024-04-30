@@ -20,14 +20,25 @@ const FrontPage: React.FC<FrontPageProps> = ({ onButtonClick }) => {
 
     return (
         <div>
-            <div className="text">
-                Velkommen til Soapbox Showdown
-                <br></br>       
-                <br></br>
+            <img src="/assets/is-logo.png" alt="IS Logo" className='islogo'></img>
+             <div className="headline">
+                Institutdysten
             </div>
-            <div style={{textAlign: "center"}}>
-                {/* Attaching onClick event to the button */}
-                <button className="introButton" onClick={handleButtonClick}>Til spillet</button>
+            <div className='underheadline'>by SDS</div>
+
+            <div className='infotext'>Lorem ipsum and secure your faculty in the leaderboard to win a special prize!</div>
+            <div>
+                <img src="assets/CarLogo.png" className='fp-car-picture'></img>
+            </div>
+            
+            
+            <div className='gamename-text'>SOAPBOX SHOWDOWN</div>
+            
+            <div className='container'>
+                <button className='buttonblack' onClick={handleButtonClick}>Ready?</button>
+            </div>
+            <div className='container'>
+                <button className="buttonwhite">Leaderboard</button>
             </div>
         </div>
     );
