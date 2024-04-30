@@ -3,6 +3,7 @@ import { IRefPhaserGame, PhaserGame } from "./game/PhaserGame";
 import { EventBus } from "./EventBus";
 import IntroPage from "./IntroPage";
 import PostGame from "./PostGame/PostGame";
+import Highscore from "./HighscoreStandAlone";
 import { UserContext } from "./UserContext";
 import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 
@@ -72,7 +73,8 @@ function App() {
           </div>
       </UserContext.Provider>}
         />
-        <Route path="*" element={<Navigate to='/institutdysten2024' />} />
+        <Route path="/*" element={<Navigate to='/institutdysten2024' />} />
+        <Route path="/highscore" element={<Highscore/>} />
       </Routes>
       
     </BrowserRouter>

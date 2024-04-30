@@ -62,7 +62,7 @@ class DBUtility {
             user_score: score,
         });
         if (error) console.error(error);
-        else console.log(data);
+        //else console.log(data);
         return data;
     }
 }
