@@ -1,5 +1,5 @@
 import { EventBus } from '../../EventBus';
-import { Scene, GameObjects } from 'phaser';
+import { Scene, GameObjects, Sound } from 'phaser';
 
 export class Game extends Scene
 {
@@ -44,6 +44,7 @@ export class Game extends Scene
     private instructions2: GameObjects.Text;
     private tapToStart: GameObjects.Text;
     private noRelease: GameObjects.Text;
+    private nightRide: Phaser.Sound.BaseSound;
 
 
     updatePlayerPosition: Function;
@@ -75,7 +76,7 @@ export class Game extends Scene
         this.instructionsPage_ObjectDistance = 50;
 
         this.gameEnded = false;
-
+        this.nightRide = this.sound.add('music');
     }
     
     init(data: any) {
@@ -148,6 +149,7 @@ export class Game extends Scene
         this.SpawnRoad();
         this.SpawnObstacles();
 
+        this.nightRide.play({loop:true});
         this.scoreTimer = this.time.addEvent({
             delay: this.initialDelay, // Increment score every 1000 milliseconds (1 second)
             callback: this.UpdateScore,
