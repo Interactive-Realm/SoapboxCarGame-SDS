@@ -1,3 +1,15 @@
+Gameplay:
 Fonts
 Endscreen die-message
+game over screen
 Gameend stop point incremention
+
+CSS:
+Entire horizontal leaderboard screen for stand showcase
+Leader board button main screen
+tak for deltagelsen
+
+Backend:
+Engagement data
+
+Christian: Gave til nevø
