@@ -35,24 +35,13 @@ function Highscore() {
     return (
         <div id="app">
             <img src="/assets/is-logo.png" alt="IS Logo" className='islogo'></img>
-            <div id="highscore">
-            <div id="titlecontainer">
-                <h2 id="subtitle">
-                    SOAPBOX SHOWDOWN
-                </h2>
 
-                <h1 id="title">
-                    Leaderboard
-                </h1>
-
-            </div>
             <div>
                 <HighscoreList
                     highscores={weeklyHighscores}
                 ></HighscoreList>         
             </div>
 
-            </div>
    
         </div>
     );
