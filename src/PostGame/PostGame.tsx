@@ -6,7 +6,7 @@ import HighscoreList from "./Components/HighscoreList";
 import { UserContext } from "./../UserContext";
 import { UserHighscoreNumber } from "./types";
 
-var score = "";
+var score = "5555";
 // Subscribe to score updates
 EventBus.on("score", (data: number) => {
     score = data.toString();
@@ -18,21 +18,31 @@ interface FrontPageProps {
 
 const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
-    const [weeklyHighscores, setWeeklyHighscores] = useState<UserHighscoreNumber[]>([]);
-    const userInfo = useContext(UserContext)
+    const [weeklyHighscores, setWeeklyHighscores] = useState<
+        UserHighscoreNumber[]
+    >([]);
+    const userInfo = useContext(UserContext);
     userInfo.score = score;
 
     useEffect(() => {
-        if(JSON.parse(localStorage.getItem('userinfo')!) != null){
-            console.log(isSignedIn)
-            dbUtility.UpdateScore(userInfo.userInfo, parseInt(userInfo.score));
-            handleSignUp();
-            
-            
-            
+        checkUserInfo();
+    }, []);
 
+    const checkUserInfo = async () => {
+        if (JSON.parse(localStorage.getItem("userinfo")!) != null) {
+            if (await dbUtility.CheckUserData(JSON.parse(localStorage.getItem("userinfo")!), "sdsusers")) {
+                //console.log(isSignedIn);
+                userInfo.userInfo = JSON.parse(localStorage.getItem("userinfo")!);
+                dbUtility.UpdateScore(
+                    userInfo.userInfo,
+                    parseInt(userInfo.score)
+                );
+                handleSignUp();
+            } else {
+                localStorage.removeItem("userinfo");
+            }
         }
-    }, [])
+    };
 
     const handleSignUp = () => {
         setIsSignedIn(true);
@@ -48,16 +58,22 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
 
     return (
         <div>
-            <img src="/assets/is-logo.png" alt="IS Logo" className='islogo'></img>
+            <img
+                src="/assets/is-logo.png"
+                alt="IS Logo"
+                className="islogo"
+            ></img>
 
             {isSignedIn ? (
                 <>
                     <HighscoreList
-                        highscores={weeklyHighscores} loaduserscore={true}
+                        highscores={weeklyHighscores}
+                        loaduserscore={true}
                     ></HighscoreList>
 
                     <div id="buttonctn">
-                        <input className="buttonwhitesmall"
+                        <input
+                            className="buttonwhitesmall"
                             type="submit"
                             onClick={handlePlayAgain}
                             value="Play Again"
@@ -66,7 +82,10 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
                 </>
             ) : (
                 <>
-                    <InputForm onSignUp={handleSignUp} score={ parseInt(userInfo.score)} />
+                    <InputForm
+                        onSignUp={handleSignUp}
+                        score={parseInt(userInfo.score)}
+                    />
                 </>
             )}
         </div>
