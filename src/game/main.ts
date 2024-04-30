@@ -25,7 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
         width: window.innerWidth,
         height: window.innerHeight
     }, 
-    backgroundColor: 0x7699c6,
+    backgroundColor: 0x141729,
 };
 
 const StartGame = (parent: string) => {
