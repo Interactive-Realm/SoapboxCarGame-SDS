@@ -20,7 +20,7 @@ type Props = {
                     SOAPBOX SHOWDOWN
                 </h2>
 
-                <p>Your Score</p>
+                <p id="highscore_element">Your Score</p>
                 <h2 id="subtitle">{userInfo.score}</h2>
 
                 <h1 id="title">
