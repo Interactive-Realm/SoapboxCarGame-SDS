@@ -134,6 +134,7 @@ export class Game extends Scene
         this.instructionsImage.destroy();
         this.instructions2.destroy();
         this.tapToStart.destroy();
+        this.noRelease.destroy();
     }
 
     StartGame = () => {
