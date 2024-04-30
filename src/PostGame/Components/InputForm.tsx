@@ -16,6 +16,7 @@ const Input = ({ onSignUp, score }: Props) => {
 
     //var [score, setScore] = useState<number>();
     const onSubmit = async (values: UserHighscoreNumber) => {
+        console.log(errors.phonenumber?.message)
 
         try {
             const { data, error } = await dbUtility.CheckUserData(
@@ -59,7 +60,7 @@ const Input = ({ onSignUp, score }: Props) => {
                 <label htmlFor="e-mail" className="text">
                     Phone Number
                 </label>
-                <input {...register("phonenumber", {pattern: /^[0-9]{8}/})} />
+                <input {...register("phonenumber", {pattern: /^\b[0-9]{8}\b/})} />
                 {errors.phonenumber && (
                 <p>You Must submit a Danish phone number</p>
                 )}
