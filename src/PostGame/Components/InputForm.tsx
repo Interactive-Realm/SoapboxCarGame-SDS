@@ -31,6 +31,9 @@ const Input = ({ onSignUp, score }: Props) => {
                 onSignUp();
                 userInfo.userInfo = values.phonenumber
                 console.log("Data submitted successfully!");
+
+                localStorage.setItem('userinfo', JSON.stringify(userInfo.userInfo));           
+                
             } else{
                 await dbUtility.UpdateScore(values.phonenumber, score)
             }

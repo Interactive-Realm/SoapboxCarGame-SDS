@@ -33,9 +33,9 @@ class DBUtility {
     }
 
     // Check if user exists in given database
-    async CheckUserData(email: string, table: string): Promise<any> {
+    async CheckUserData(number: string, table: string): Promise<any> {
         const { data, error } = await this.supabase.rpc("check_phonenumber", {
-            number_to_check: email,
+            number_to_check: number,
             table_to_check: table,
         });
         // console.log(data);
@@ -52,7 +52,7 @@ class DBUtility {
           limit_count: 10 as integer,
         })
       if (error) console.error(error)
-      else console.log(data)
+      //else console.log(data)
     return data;
     }
 
