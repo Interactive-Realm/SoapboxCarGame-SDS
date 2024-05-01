@@ -23,17 +23,19 @@ const Input = ({ onSignUp, score }: Props) => {
                 values.phonenumber,
                 "sdsusers"
             );
+            console.log(data);
 
             if (error) return;
 
             else if (!data) {
-                await dbUtility.insertUserData(values.first_name, values.phonenumber, score);
-                onSignUp();
                 userInfo.userInfo = values.phonenumber
-                console.log("Data submitted successfully!");
+                localStorage.setItem('userinfo', JSON.stringify(userInfo.userInfo));
 
-                localStorage.setItem('userinfo', JSON.stringify(userInfo.userInfo));           
+                await dbUtility.insertUserData(values.first_name, userInfo.userInfo, score);
+                onSignUp();
                 
+                console.log("Data submitted successfully!");
+                 
             } else{
                 await dbUtility.UpdateScore(values.phonenumber, score)
             }
