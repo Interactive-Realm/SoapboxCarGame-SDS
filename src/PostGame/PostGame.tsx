@@ -6,7 +6,7 @@ import HighscoreList from "./Components/HighscoreList";
 import { UserContext } from "./../UserContext";
 import { UserHighscoreNumber } from "./types";
 
-var score = "5555";
+var score = "";
 // Subscribe to score updates
 EventBus.on("score", (data: number) => {
     score = data.toString();
@@ -15,6 +15,8 @@ EventBus.on("score", (data: number) => {
 interface FrontPageProps {
     playAgain: (isClicked: boolean) => void; // Callback function type
 }
+
+let isCalled = true;
 
 const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -25,12 +27,26 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     userInfo.score = score;
 
     useEffect(() => {
-        checkUserInfo();
+        if(isCalled){
+            isCalled = false;
+            checkUserInfo();           
+        }
+        
     }, []);
+
+    
 
     const checkUserInfo = async () => {
         if (JSON.parse(localStorage.getItem("userinfo")!) != null) {
-            if (await dbUtility.CheckUserData(JSON.parse(localStorage.getItem("userinfo")!), "sdsusers")) {
+            console.log("Local Storage exists: " + JSON.parse(localStorage.getItem("userinfo")!))
+
+            const { data, error } = await dbUtility.CheckUserData(
+                JSON.parse(localStorage.getItem("userinfo")!),
+                "sdsusers"
+            );
+            console.log(data);
+            if (data) {
+                console.log("Local Storage Matches Database entry:" + data)
                 //console.log(isSignedIn);
                 userInfo.userInfo = JSON.parse(localStorage.getItem("userinfo")!);
                 dbUtility.UpdateScore(
@@ -39,10 +55,14 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
                 );
                 handleSignUp();
             } else {
+                console.log("Removed " + JSON.parse(localStorage.getItem("userinfo")!) + " from localstorage");
                 localStorage.removeItem("userinfo");
+                
             }
         }
     };
+
+    
 
     const handleSignUp = () => {
         setIsSignedIn(true);
