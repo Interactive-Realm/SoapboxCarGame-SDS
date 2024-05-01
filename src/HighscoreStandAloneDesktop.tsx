@@ -37,13 +37,13 @@ const HighscoreDesktop = () => {
     }, [])
 
     return (
-        <div id="app">
+        <div className="HighscoreDesktop">
             <div className="HSTopBar"> 
                 <img src="/assets/is-logo.png" alt="IR Logo" className='hslogo'></img>
                 <p className="titlecontainer subcolor subfont">SOAPBOX SHOWDOWN</p>
             </div>
            
-            <p className="HSLeaderboardTitle">Leaderboard</p>
+            <p className="HSLeaderboardTitle mainfont">Leaderboard</p>
 
 
             {highscore.length > 0 ? (
@@ -76,7 +76,7 @@ const HighscoreDesktop = () => {
                     </div>
                 </div>
 
-                <hr className="verticalLine"  />
+                <div className="verticalLine"  />
 
                 <div className="therest">
                     <HighscoreItem
@@ -131,15 +131,18 @@ const HighscoreDesktop = () => {
             )}
             
             <div className="HSfooter">
-                <div className="qrctn">
-                    <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
+            <div className="HSfooter2">
+            <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
+                <div className="HSfooterText">
+                <span className="subtitle subfont">PLAY SOAPBOX SHOWN</span>
+                <span className="subfont">APP.INTERACTIVE-REALM.COM/<span className="subfont subcolor">INSTITUTDYSTEN2024</span></span>
                 </div>
-                <div>
-                    <p id="subtitle">PLAY SOAPBOX SHOWN</p>
-                    <p>APP.INTERACTIVE-REALM.COM/<span id="subtitle">INSTITUTDYSTEN2024</span></p>
-                </div>
-                <div className="HSSoMe">
-                <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
+            </div>
+            
+                <div className="HSSoMe subfont">
+                    <span>Interactive Realm</span>
+                    <span>Interactive Realm</span>
+                    <span>Interactive Realm</span>
 
                 </div>
             </div>

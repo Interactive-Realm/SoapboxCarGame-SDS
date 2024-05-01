@@ -14,8 +14,11 @@ const HighscoreItem = ({ rank, highscore, cssid }: Props) => {
     return (
         <li id="highscore_element">
             <span id="highscore_element2">
-                <span id="hsrank">{rank} </span>
-                <span className="hsname" id={cssid}>{highscore.name} </span>
+                <span className="highscore_element3">
+                    <span id="hsrank">{rank} </span>
+                    <span className="hsname" id={cssid}>{highscore.name} </span>
+                </span>
+                
                 <span id="hsscore">{formatScore(highscore.score)}</span>
             </span>
         </li>

@@ -63,7 +63,7 @@ const Input = ({ onSignUp, score }: Props) => {
                 <p id="formtext">
                     This will be visible on the Leaderboard
                 </p>
-                <input {...register("first_name", {pattern: /^[A-Za-z]+$/i})} />
+                <input {...register("first_name", {pattern: /^[A-Za-z]{3,15}+$/i})} />
                 {errors.first_name && (
                 <p id="highscore_element">You must submit a valid name </p>
                 )}
