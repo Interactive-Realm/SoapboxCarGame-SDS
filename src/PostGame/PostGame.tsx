@@ -54,7 +54,7 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
                 JSON.parse(localStorage.getItem("userinfo")!),
                 "sdsusers"
             );
-            console.log(data);
+            console.log("Does user exist in DB: " + data);
             if (data) {
                 console.log("Local Storage Matches Database entry:" + data)
                 //console.log(isSignedIn);
