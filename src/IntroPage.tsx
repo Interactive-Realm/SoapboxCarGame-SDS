@@ -27,7 +27,7 @@ const FrontPage: React.FC<FrontPageProps> = ({ onButtonClick }) => {
             </div>
             <div className='underheadline'>by SDS</div>
 
-            <div className='infotext'>Lorem ipsum and secure your faculty in the leaderboard to win a special prize!</div>
+            <div className='infotext'>Drive your soapbox car, earn distance points, and secure your place on the Leaderboard.</div>
          
                 <img src="assets/CarLogo.png" className='fp-car-picture'></img>
                

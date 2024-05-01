@@ -88,6 +88,19 @@ body {
     color: #FFFFFF;
 }
 
+.fp-car-picture2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  margin-bottom: 25%;
+  width: 80%;
+  text-align: center;
+  justify-content: center;
+
+  color: #FFFFFF;
+}
+
 .gamename-text {
     margin: auto;
     margin-top: 2vw;
@@ -159,6 +172,13 @@ body {
   font-size: 10vw;
   font-family: 'JetBrains Mono';
   margin-bottom: 0;
+}
+#subtitle3{
+  color: #66F0D7;
+  font-size: 10vw;
+  font-family: 'JetBrains Mono';
+  margin-bottom: 0;
+  margin-top: 20%;
 }
 
 #title{
@@ -423,6 +443,11 @@ ul{
   gap: 1.5rem;
   width: 20%;
   align-items: flex-end;
+}
+
+#gameover {
+
+  text-align: center;
 }
 
 

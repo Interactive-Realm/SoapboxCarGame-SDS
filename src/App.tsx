@@ -86,7 +86,7 @@ function App() {
         <Route path="/*" element={<Navigate to='/institutdysten2024' />} />
         <Route path="/leaderboard" element={<Highscore/>} />
         <Route path="/leaderboardd" element={<HighscoreDesktop/>} />
-        <Route path="/endscreen" element={<HighscoreDesktop/>} />
+        <Route path="/gameover" element={<GameOver/>} />
       </Routes>
       
     </BrowserRouter>

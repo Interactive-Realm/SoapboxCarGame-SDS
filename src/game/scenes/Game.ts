@@ -123,7 +123,10 @@ export class Game extends Scene
         });
     }
     SetupPoints() {
-        this.points = this.add.text(this.screenCenterX, this.screenHeight/30, "").setDepth(2).setFontSize(28).setOrigin(0.5,0);
+        this.points = this.add.text(this.screenCenterX, this.screenHeight/30, "", {
+            fontFamily: 'JetBrains Mono',
+        }).setDepth(2).setFontSize(28).setOrigin(0.5,0).setColor("#66F0D7").setDepth(10);
+        
     }
 
     UpdateScore() {
