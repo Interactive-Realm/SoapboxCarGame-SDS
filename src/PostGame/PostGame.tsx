@@ -12,11 +12,16 @@ EventBus.on("score", (data: number) => {
     score = data.toString();
 });
 
+let isCalled = true;
+EventBus.on("gameHasEnded", (data: boolean) => {
+    isCalled = data;
+});
+
 interface FrontPageProps {
     playAgain: (isClicked: boolean) => void; // Callback function type
 }
 
-let isCalled = true;
+
 
 const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -27,6 +32,7 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
     userInfo.score = score;
 
     useEffect(() => {
+        console.log("isCalled state: " + isCalled)
         if(isCalled){
             isCalled = false;
             checkUserInfo();           
