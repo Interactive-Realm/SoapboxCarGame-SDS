@@ -33,9 +33,6 @@ const FrontPage: React.FC<FrontPageProps> = ({ onButtonClick }) => {
             <div className='container'>
                 <button className='buttonblack' onClick={handleButtonClick}>Ready?</button>
             </div>
-            <div className='container'>
-                <button className="buttonwhite">Leaderboard</button>
-            </div>
         </div>
     );
 }
