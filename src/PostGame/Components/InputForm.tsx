@@ -75,7 +75,7 @@ const Input = ({ onSignUp, score }: Props) => {
 
                 <p id="tos">
 
-                By signing up, you consent to Interactive Realm temporarily storing your display name and e-mail for up to 24 hours. 
+                By signing up, you consent to Interactive Realm temporarily storing your display name and phonenumber for up to 24 hours. 
                 We do not collect or store this data beyond the specified time, nor will we hand over this data to any third party.
 
                 </p>
