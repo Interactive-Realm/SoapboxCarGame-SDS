@@ -5,6 +5,7 @@ import InputForm from "./Components/InputForm";
 import HighscoreList from "./Components/HighscoreList";
 import { UserContext } from "./../UserContext";
 import { UserHighscoreNumber } from "./types";
+import GameOver from "./GameOver";
 
 var score = "";
 // Subscribe to score updates
@@ -13,6 +14,7 @@ EventBus.on("score", (data: number) => {
 });
 
 let isCalled = true;
+
 EventBus.on("gameHasEnded", (data: boolean) => {
     isCalled = data;
 });
@@ -29,7 +31,9 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
         UserHighscoreNumber[]
     >([]);
     const userInfo = useContext(UserContext);
+    const [gameOver, setGameOver] = useState(true);
     userInfo.score = score;
+    
 
     useEffect(() => {
         console.log("isCalled state: " + isCalled)
@@ -60,9 +64,11 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
                     parseInt(userInfo.score)
                 );
                 handleSignUp();
+                userInfo.userExist = true;
             } else {
                 console.log("Removed " + JSON.parse(localStorage.getItem("userinfo")!) + " from localstorage");
                 localStorage.removeItem("userinfo");
+                userInfo.userExist = false;
                 
             }
         }
@@ -82,6 +88,11 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
         playAgain(true);
     };
 
+    const handleGameOver = () => {
+        // The parameter of this component is set
+        setGameOver(false);
+    };
+
     return (
         <div>
             <img
@@ -90,8 +101,12 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
                 className="islogo"
             ></img>
 
-            {isSignedIn ? (
+            {gameOver? (
+                <GameOver onGameOver={handleGameOver}></GameOver>
+            ) :(
                 <>
+                {isSignedIn ? (
+                    <>
                     <HighscoreList
                         highscores={weeklyHighscores}
                         loaduserscore={true}
@@ -114,6 +129,10 @@ const PostGame: React.FC<FrontPageProps> = ({ playAgain }) => {
                     />
                 </>
             )}
+
+                </>
+            )}
+            
         </div>
     );
 };

@@ -84,9 +84,8 @@ function App() {
             </UserContext.Provider>}
         />
         <Route path="/*" element={<Navigate to='/institutdysten2024' />} />
-        <Route path="/leaderboard" element={<Highscore/>} />
-        <Route path="/leaderboardd" element={<HighscoreDesktop/>} />
-        <Route path="/gameover" element={<GameOver/>} />
+        <Route path="/leaderboardmobile" element={<Highscore/>} />
+        <Route path="/leaderboard" element={<HighscoreDesktop/>} />        
       </Routes>
       
     </BrowserRouter>
