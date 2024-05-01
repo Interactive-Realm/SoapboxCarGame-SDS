@@ -160,6 +160,13 @@ body {
   font-family: 'JetBrains Mono';
   margin-bottom: 0;
 }
+#subtitle3{
+  color: #66F0D7;
+  font-size: 10vw;
+  font-family: 'JetBrains Mono';
+  margin-bottom: 0;
+  margin-top: 20%;
+}
 
 #title{
   font-size: 40px;
@@ -392,6 +399,11 @@ ul{
   display: flex;
   flex-direction: row;
   padding: 0 10% ;
+}
+
+#gameover {
+
+  text-align: center;
 }
 
 
