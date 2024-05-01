@@ -35,7 +35,9 @@ export class Game extends Scene
     //Text variables
     private points: GameObjects.Text;
 
+    // Sound variables
     private nightRide: Phaser.Sound.BaseSound;
+    private crash: Phaser.Sound.BaseSound;
 
 
     updatePlayerPosition: Function;
@@ -66,6 +68,7 @@ export class Game extends Scene
 
         this.gameEnded = false;
         this.nightRide = this.sound.add('music');
+        this.crash = this.sound.add('crash');
     }
     
     init(data: any) {
@@ -270,7 +273,6 @@ export class Game extends Scene
 
     SetupCollision() {
         this.physics.add.overlap(this.player, this.obstacles, this.triggerEndGame);
-        this.physics.add.collider(this.player, this.marginObstacles);
     }
     
     SetCursorHoldTrue = () => {
@@ -285,6 +287,7 @@ export class Game extends Scene
 
     triggerEndGame = () => {
         if(this.gameEnded === false) {
+            this.crash.play();
             console.log("BALLS!");
             this.endGame();
         }

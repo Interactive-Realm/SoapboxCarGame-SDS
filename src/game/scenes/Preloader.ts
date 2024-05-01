@@ -50,6 +50,7 @@ export class Preloader extends Scene
         this.load.image('instructions', 'instructions.png');
         this.load.image('cone', 'trafficcone.png');
         this.load.audio('music', 'night-ride-mountaineer.mp3');
+        this.load.audio('crash', 'crash.mp3');
     }
 
     create ()
