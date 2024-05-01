@@ -4,6 +4,7 @@ import { EventBus } from "./EventBus";
 import IntroPage from "./IntroPage";
 import PostGame from "./PostGame/PostGame";
 import Highscore from "./HighscoreStandAlone";
+import HighscoreDesktop from "./HighscoreStandAloneDesktop";
 import GameOver from "./PostGame/GameOver";
 import { UserContext } from "./UserContext";
 import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
@@ -84,7 +85,6 @@ function App() {
         />
         <Route path="/*" element={<Navigate to='/institutdysten2024' />} />
         <Route path="/highscore" element={<Highscore/>} />
-        <Route path="/gameover" element={<GameOver/>} />
       </Routes>
       
     </BrowserRouter>

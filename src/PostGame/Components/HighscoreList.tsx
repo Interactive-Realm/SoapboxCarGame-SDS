@@ -35,6 +35,7 @@ const HighscoreList = ({ highscores, loaduserscore }: Props) => {
                                 key={item.phonenumber}
                                 rank={i + 1}
                                 highscore={item}
+                                cssid=""
                             />
                             <hr id="line_top3"></hr>
                         </div>
@@ -44,6 +45,7 @@ const HighscoreList = ({ highscores, loaduserscore }: Props) => {
                                 key={item.phonenumber}
                                 rank={i + 1}
                                 highscore={item}
+                                cssid=""
                             />
                         </div>
                     )
