@@ -16,20 +16,15 @@ class DBUtility {
         phonenumber: string,
         score: number
     ): Promise<void> {
-        try {
-            const { data, error } = await this.supabase
-                .from("sdsusers") // Replace 'users' with your table name
-                .insert([{ first_name, phonenumber, score }]); // Has to match the database column names
-
-            if (error) {
-                console.error("Error inserting data:", error);
-                console.error("Server response:", error.details);
-            } else {
-                console.log("Data inserted successfully:", data);
-            }
-        } catch (error) {
-            console.error("Error:", (error as Error).message);
-        }
+        let { data, error } = await this.supabase
+        .rpc('insert_user', {
+          user_name: first_name, 
+          user_number: phonenumber, 
+          user_score: score
+        })
+      if (error) console.error(error)
+      //else console.log(data)
+      return data;
     }
 
     // Check if user exists in given database
