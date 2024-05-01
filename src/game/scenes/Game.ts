@@ -293,6 +293,7 @@ export class Game extends Scene
 
     endGame = () => {
         this.cameras.main.fadeOut(1500, 0, 0, 0);
+        this.scoreTimer.remove();
         this.SetCursorHoldFalse();
 
         console.log("game ended! Your Score: " + this.score);
