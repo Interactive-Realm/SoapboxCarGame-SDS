@@ -19,7 +19,6 @@ export class Game extends Scene
     private playerPositionY: number;
     private gameSpeed: number;
     private updateGameSpeed: Phaser.Time.TimerEvent;
-    private points: GameObjects.Text;
     private scoreTimer: Phaser.Time.TimerEvent;
     private initialDelay: number;
     private decreaseAmount: number;
@@ -31,19 +30,11 @@ export class Game extends Scene
     obstacles: Phaser.Physics.Arcade.Sprite[] = [];
     marginObstacles: Phaser.Physics.Arcade.Sprite[] = [];
     stripes: Phaser.Physics.Arcade.Sprite[] = [];
-    irlogo: GameObjects.Image;
     instructionsImage: GameObjects.Image;
 
     //Text variables
-    instructionsPage_ObjectDistance: number;
-    instructionsTextHeight: number;
-    instructionsTextWidth: number;
-    welcomeText: GameObjects.Text;
-    scoreShowcase: GameObjects.Text;
-    private instructions: GameObjects.Text;
-    private instructions2: GameObjects.Text;
-    private tapToStart: GameObjects.Text;
-    private noRelease: GameObjects.Text;
+    private points: GameObjects.Text;
+
     private nightRide: Phaser.Sound.BaseSound;
 
 
@@ -73,8 +64,6 @@ export class Game extends Scene
         this.initialDelay = 150;
         this.decreaseAmount = 0.1;
 
-        this.instructionsPage_ObjectDistance = 50;
-
         this.gameEnded = false;
         this.nightRide = this.sound.add('music');
     }
@@ -100,45 +89,11 @@ export class Game extends Scene
     }
 
     SetupInstructions() {
-        this.irlogo = this.add.image(this.screenCenterX/8, this.screenCenterY/12, 'ir-logo').setOrigin(0,0.5);
-
-        this.welcomeText = this.add.text(this.screenCenterX, this.screenCenterY/5, 'Welcome to Soapbox Showdown!'); 
-        this.welcomeText.setColor('#ffffff').setOrigin(0.5,0.5).setFontStyle('bold');
-        
-
-        this.instructions = this.add.text(this.welcomeText.x, this.welcomeText.y + 35, 'Your goal is to obtain the highest score possible by driving your soapbox car as far as you can', {
-
-            wordWrap: { width: this.screenWidth, useAdvancedWrap: true }
-            });
-        this.instructions.setColor('#ffffff').setOrigin(0.5,0.5).setAlign('center');
-
-        this.scoreShowcase = this.add.text(this.instructions.x, this.instructions.y + this.instructionsPage_ObjectDistance, '3,258 meters');
-        this.scoreShowcase.setColor('#66F0D7').setOrigin(0.5,0).setAlign('center').setFontSize(28);
-
-        this.instructionsImage = this.add.image(this.scoreShowcase.x, this.scoreShowcase.y + this.instructionsPage_ObjectDistance+10, 'instructions').setOrigin(0.5, 0);
-        
-        this.instructions2 = this.add.text(this.welcomeText.x, this.instructionsImage.y + this.instructionsImage.height + this.instructionsPage_ObjectDistance, 'Avoid OBSTACLES by using your finger to guide your soapbox car', {
-
-            wordWrap: { width: this.screenWidth/1.2, useAdvancedWrap: true }
-            });
-        this.instructions2.setColor('#ffffff').setOrigin(0.5,0).setAlign('center');
-
-        this.tapToStart = this.add.text(this.welcomeText.x, this.instructions2.y + this.instructionsPage_ObjectDistance+40, "TOUCH AND HOLD TO DRIVE");
-        this.tapToStart.setColor('#66F0D7').setOrigin(0.5,0.5).setAlign('center');
-
-        this.noRelease = this.add.text(this.welcomeText.x, this.tapToStart.y+ 22, "RELEASING THE HOLD WILL END THE GAME");
-        this.noRelease.setColor('#F57373').setOrigin(0.5,0.5).setAlign('center');
+        this.instructionsImage = this.add.image(this.screenCenterX, this.screenCenterY, 'instructions');
     }
 
     RemoveInstructions() {
-        this.irlogo.destroy();
-        this.welcomeText.destroy();
-        this.instructions.destroy();
-        this.scoreShowcase.destroy();
         this.instructionsImage.destroy();
-        this.instructions2.destroy();
-        this.tapToStart.destroy();
-        this.noRelease.destroy();
     }
 
     StartGame = () => {
@@ -338,6 +293,7 @@ export class Game extends Scene
 
     endGame = () => {
         this.cameras.main.fadeOut(1500, 0, 0, 0);
+        this.scoreTimer.remove();
         this.SetCursorHoldFalse();
 
         console.log("game ended! Your Score: " + this.score);

@@ -182,10 +182,10 @@ input{
 
 .buttonwhitesmall{
   color: #141729;
-
   align-items: center; /* Vertically center the content */
   margin: auto; /* Center the button horizontally within its container */
   margin-right: 4vw;
+  margin-top: 4vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
