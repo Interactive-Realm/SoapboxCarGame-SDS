@@ -130,23 +130,24 @@ const HighscoreDesktop = () => {
                 <div/>
             )}
             
+
             <div className="HSfooter">
-            <div className="HSfooter2">
-            <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
-                <div className="HSfooterText">
-                <span className="subtitle subfont">PLAY SOAPBOX SHOWN</span>
-                <span className="subfont">APP.INTERACTIVE-REALM.COM/<span className="subfont subcolor">INSTITUTDYSTEN2024</span></span>
+                <div className="HSfooter2">
+                    <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
+                    <div className="HSfooterText">
+                        <span className="subtitle subfont">PLAY SOAPBOX SHOWN</span>
+                        <span className="subfont">APP.INTERACTIVE-REALM.COM/<span className="subfont subcolor">INSTITUTDYSTEN2024</span></span>
+                    </div>
                 </div>
+                <div className="HSfooter3">
+                    
+                    <img src="/assets/SoMe.png" alt="IS Logo" className='QR'></img>  
+                    <div className="HSfooterText2">
+                        <span className="subtitle subfont">Follow us on Social Media</span>
+                        <span className="subfont">Where we announce the <span className="subfont subcolor">Winner</span>!</span>
+                    </div>                  
+                </div>      
             </div>
-            
-                <div className="HSSoMe subfont">
-                    <span>Interactive Realm</span>
-                    <span>Interactive Realm</span>
-                    <span>Interactive Realm</span>
-
-                </div>
-            </div>
-
 
    
         </div>

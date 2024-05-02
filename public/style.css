@@ -427,11 +427,24 @@ ul{
   flex-direction: row;
 }
 
+.HSfooter3{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .HSfooterText{
   padding: 0 2% 0 2%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.HSfooterText2{
+  padding: 0 2% 0 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .HSSoMe{
@@ -449,8 +462,21 @@ ul{
   text-align: center;
 }
 
+.QR2{
+  display: block;
+  width: 100%;
+  object-fit: scale-down;
+  
+}
 
+.SoMeText{
+  padding-right: 1%;
+}
 
+.SecretFooter{
+  display: flex;
+  flex-direction: row-reverse;
+}
 
 
 
