@@ -135,7 +135,7 @@ const HighscoreDesktop = () => {
                 <div className="HSfooter2">
                     <img src="/assets/IDQR2024.png" alt="IS Logo" className='QR'></img>
                     <div className="HSfooterText">
-                        <span className="subtitle subfont">PLAY SOAPBOX SHOWN</span>
+                        <span className="subtitle subfont">PLAY SOAPBOX SHOWDOWN</span>
                         <span className="subfont">APP.INTERACTIVE-REALM.COM/<span className="subfont subcolor">INSTITUTDYSTEN2024</span></span>
                     </div>
                 </div>
